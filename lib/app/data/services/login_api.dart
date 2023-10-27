@@ -48,7 +48,6 @@ class LoginApi extends LoginClient{
           authenticateEndpoint,
           data: requestBody,
         );
-        //ResponseObject responseObject = ResponseObject.fromJson(response.data);
         if (response.statusCode == 200) {
           Get.find<LoginController>().storedToken.value = response.data["token"];
           debugPrint("Login: Success!");
