@@ -20,7 +20,7 @@ class AppPages {
 
     GetPage(
         name: AppRoutes.home,
-        page: () => OverlayPage(selectedPage: 1),
+        page: () => OverlayPage(selectedPage: 0),
         binding: OverlayBinding(),
         transitionDuration: const Duration(milliseconds: duration),
         transition: Transition.leftToRight),

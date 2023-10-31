@@ -1,16 +1,26 @@
 import 'package:fashion_app/app/data/services/login_api.dart';
+import 'package:fashion_app/app/data/services/user_info_api.dart';
 import 'package:fashion_app/app/models/response/server_response.dart';
+import 'package:fashion_app/app/models/user_model.dart';
 import 'package:fashion_app/core/utils/flutx/lib/utils/string_utils.dart';
-import 'package:fashion_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController{
+  final storedEmail = "".obs;
+  final storedFullName = "".obs;
+  final storedUsername = "".obs;
+  final storedUserId = "".obs;
+  final storedPhoneNumber = "".obs;
+  final storedGender = "".obs;
+  final storedRole = "".obs;
+  final storedBirthday = "".obs;
+
+
   late TextEditingController emailTE, passwordTE;
   GlobalKey<FormState> formKey = GlobalKey();
   int emailCounter = 0;
   int passwordCounter = 0;
-
   final storedToken = "".obs;
   final storedRefreshToken = "".obs;
 
@@ -40,11 +50,31 @@ class LoginController extends GetxController{
     emailCounter = 0;
     passwordCounter = 0;
     if (formKey.currentState!.validate()) {
-      await Future.delayed(Duration(milliseconds: 1000));
+      await Future.delayed(const Duration(milliseconds: 1000));
     }
-
     String result = await LoginApi().authenticate(emailTE.text, passwordTE.text);
+
+    if(result == ServerResponse.success){
+        await getUserInfo();
+    }
     return result;
+  }
+
+  Future<void> getUserInfo() async{
+    try{
+      UserModel user = await UserInfoApi().getUserInfo();
+      storedUserId.value = user.id.toString();
+      storedUsername.value = user.username ?? "";
+      storedBirthday.value = user.birthday ?? "";
+      storedPhoneNumber.value = user.phoneNumber ?? "";
+      storedGender.value = user.gender ?? "";
+      storedEmail.value = user.email ?? "";
+      storedFullName.value = user.fullName ?? "";
+      storedRole.value = user.role ?? "";
+
+    }catch(e){
+      print(e);
+    }
   }
 
   void goToRegisterScreen() {

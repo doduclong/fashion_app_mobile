@@ -3,16 +3,17 @@ import 'package:dio/dio.dart';
 import 'package:fashion_app/app/data/constant/environment.dart';
 import 'package:fashion_app/app/models/response/response_object.dart';
 import 'package:fashion_app/app/models/response/server_response.dart';
+import 'package:fashion_app/app/models/user_model.dart';
 import 'package:fashion_app/app/modules/login/login_controller.dart';
 import 'package:fashion_app/core/values/app_value.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-abstract class LoginClient {
+abstract class UserInfoClient {
   List<String> ids = [];
   late Dio dio;
 
-  LoginClient() {
+  UserInfoClient() {
     dio = Dio();
     initialize();
   }
@@ -26,41 +27,42 @@ abstract class LoginClient {
     dio.options.receiveTimeout = const Duration(milliseconds: AppValue.timeout);
   }
 
-  Future authenticate(String username, String password);
+  Future getUserInfo();
 }
 
-class LoginApi extends LoginClient{
-  static const authenticateEndpoint = "/authenticate";
+class UserInfoApi extends UserInfoClient{
+  static const userInfoEndpoint = "/user/info";
+
+
+  Map<String, dynamic> headers = {'Authorization': 'Bearer ${Get
+      .find<LoginController>()
+      .storedToken
+      .value}'};
 
   @override
-  Future authenticate(String username, String password) async{
-    final requestBody = {
-      "username": username,
-      "password": password,
-    };
-
+  Future getUserInfo() async{
     try {
       final connectivityResult = await Connectivity().checkConnectivity();
       //Kiểm tra xem có kết nối mạng hay không
       if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
-        final response = await dio.post(
-          authenticateEndpoint,
-          data: requestBody,
+        final response = await dio.get(
+          userInfoEndpoint,
+          options: Options(headers: headers),
         );
+        ResponseObject responseObject = ResponseObject.fromJson(response.data);
         if (response.statusCode == 200) {
-          Get.find<LoginController>().storedToken.value = response.data["token"];
-          debugPrint("Login: Success!");
-          return  ServerResponse.success;
+          UserModel data = UserModel.fromJson(responseObject.data);
+          return data;
         } else {
-          debugPrint("Login: Server not response!");
+          debugPrint("get user info: Server not response!");
           return ServerResponse.noResponse;
         }
       } else {
-        debugPrint("Login: No connectivity!");
+        debugPrint("get user info: No connectivity!");
         return ServerResponse.noConnectivity;
       }
     } on Exception {
-      debugPrint("Login: Error found!");
+      debugPrint("get user info: Error found!");
       return ServerResponse.connectionFailed;
     }
   }

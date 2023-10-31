@@ -1,4 +1,5 @@
 import 'package:fashion_app/app/modules/home/home_controller.dart';
+import 'package:fashion_app/app/modules/login/login_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
@@ -24,7 +25,7 @@ class HomePage extends GetView<HomeController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    FxText.titleMedium("Welcome",
+                    FxText.titleMedium("Xin chào ${Get.find<LoginController>().storedUsername.value}!",
                         letterSpacing: 0, fontWeight: 600, color: theme.colorScheme.onBackground,),
                     InkWell(
                       onTap: () {
@@ -81,7 +82,7 @@ class HomePage extends GetView<HomeController> {
                               padding: FxSpacing.xy(12, 8),
                               color: theme.colorScheme.primary.withAlpha(28),
                               borderRadiusAll: 4,
-                              child: FxText.bodySmall("Trending",
+                              child: FxText.bodySmall("Xu hướng",
                                   color: theme.colorScheme.primary,
                                   letterSpacing: 0.3,
                                   fontWeight: 600),
@@ -113,9 +114,9 @@ class HomePage extends GetView<HomeController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    FxText.bodyLarge("Popular Deals",
+                    FxText.bodyLarge("Bán chạy",
                         fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground),
-                    FxText.bodySmall("View all",
+                    FxText.bodySmall("Xem tất cả",
                         color: theme.colorScheme.primary, letterSpacing: 0, )
                   ],
                 ),
@@ -178,9 +179,9 @@ class HomePage extends GetView<HomeController> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    FxText.bodyLarge("For you", fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground),
+                    FxText.bodyLarge("Dành cho bạn", fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground),
                     FxText.bodySmall(
-                      "View all",
+                      "Xem tất cả",
                       letterSpacing: 0,
                       color: theme.colorScheme.primary,
                     ),
@@ -224,31 +225,6 @@ class HomePage extends GetView<HomeController> {
                         context: context
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                margin: FxSpacing.nBottom(24),
-                child: FxText.titleMedium("Best sellers",
-                    fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground),
-              ),
-              Container(
-                margin: FxSpacing.all(24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    singleSellerWidget(
-                        image: './assets/images/profile/avatar_1.jpg',
-                        name: 'Liss\'s Shop'),
-                    singleSellerWidget(
-                        image: './assets/images/profile/avatar_2.jpg',
-                        name: 'Ekk Shop'),
-                    singleSellerWidget(
-                        image: './assets/images/profile/avatar_3.jpg',
-                        name: 'Shop Center'),
-                    singleSellerWidget(
-                        image: './assets/images/profile/avatar_4.jpg',
-                        name: 'Sweety')
                   ],
                 ),
               ),

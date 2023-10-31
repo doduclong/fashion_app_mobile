@@ -8,11 +8,11 @@ import 'package:fashion_app/core/values/app_value.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-abstract class LoginClient {
+abstract class ProductClient {
   List<String> ids = [];
   late Dio dio;
 
-  LoginClient() {
+  ProductClient() {
     dio = Dio();
     initialize();
   }
@@ -26,41 +26,41 @@ abstract class LoginClient {
     dio.options.receiveTimeout = const Duration(milliseconds: AppValue.timeout);
   }
 
-  Future authenticate(String username, String password);
+  Future getProducts();
 }
 
-class LoginApi extends LoginClient{
-  static const authenticateEndpoint = "/authenticate";
+class ProductApi extends ProductClient{
+  static const userInfoEndpoint = "/user/info";
+
+
+  Map<String, dynamic> headers = {'Authorization': 'Bearer ${Get
+      .find<LoginController>()
+      .storedToken
+      .value}'};
 
   @override
-  Future authenticate(String username, String password) async{
-    final requestBody = {
-      "username": username,
-      "password": password,
-    };
-
+  Future getProducts() async{
     try {
       final connectivityResult = await Connectivity().checkConnectivity();
       //Kiểm tra xem có kết nối mạng hay không
       if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
-        final response = await dio.post(
-          authenticateEndpoint,
-          data: requestBody,
+        final response = await dio.get(
+          userInfoEndpoint,
+          options: Options(headers: headers),
         );
+        ResponseObject responseObject = ResponseObject.fromJson(response.data);
         if (response.statusCode == 200) {
-          Get.find<LoginController>().storedToken.value = response.data["token"];
-          debugPrint("Login: Success!");
-          return  ServerResponse.success;
+
         } else {
-          debugPrint("Login: Server not response!");
+          debugPrint("get products: Server not response!");
           return ServerResponse.noResponse;
         }
       } else {
-        debugPrint("Login: No connectivity!");
+        debugPrint("get products: No connectivity!");
         return ServerResponse.noConnectivity;
       }
     } on Exception {
-      debugPrint("Login: Error found!");
+      debugPrint("get products: Error found!");
       return ServerResponse.connectionFailed;
     }
   }
