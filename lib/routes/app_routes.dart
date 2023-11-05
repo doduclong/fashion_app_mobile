@@ -5,4 +5,6 @@ class AppRoutes {
   static const signUp = '/sign-up';
   static const overlayPage = '/overlayPage';
   static const home = '/home';
+  static const deliveryAddress = '/delivery-address';
+  static const order = '/order';
 }

@@ -35,12 +35,6 @@ class LoginPage extends GetView<LoginController> {
             textAlign: TextAlign.center,
             color: theme.colorScheme.onBackground,
           ),
-          // FxSpacing.height(20),
-          // FxText.bodyMedium(
-          //   'Welcome back you\'ve been missed!',
-          //   muted: true,
-          //   textAlign: TextAlign.center,
-          // ),
           FxSpacing.height(50),
           Form(
             key: controller.formKey,
@@ -92,6 +86,7 @@ class LoginPage extends GetView<LoginController> {
                   controller: controller.passwordTE,
                   validator: controller.validatePassword,
                   cursorColor: theme.colorScheme.onBackground,
+                  obscureText: true,
                 ),
               ],
             ),
@@ -116,21 +111,23 @@ class LoginPage extends GetView<LoginController> {
             elevation: 0,
             borderRadiusAll: 4,
             onPressed: () async{
-              String result = await controller.login();
+              Get.toNamed(AppRoutes.home);
 
-              if(result == ServerResponse.success){
-                Get.toNamed(AppRoutes.home);
-              }else{
-                if(context.mounted){
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return const ErrorDialog(
-                            icon: Icons.login,
-                            message: "Sai thông tin đăng nhập!");
-                      });
-                }
-              }
+              // String result = await controller.login();
+              //
+              // if(result == ServerResponse.success){
+              //   Get.toNamed(AppRoutes.home);
+              // }else{
+              //   if(context.mounted){
+              //     showDialog(
+              //         context: context,
+              //         builder: (context) {
+              //           return const ErrorDialog(
+              //               icon: Icons.login,
+              //               message: "Sai thông tin đăng nhập!");
+              //         });
+              //   }
+              // }
             },
             splashColor: theme.colorScheme.onPrimary.withAlpha(28),
             backgroundColor: theme.colorScheme.primary,

@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:fashion_app/app/data/constant/environment.dart';
+import 'package:fashion_app/app/models/product/product.dart';
 import 'package:fashion_app/app/models/response/response_object.dart';
 import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/modules/login/login_controller.dart';
@@ -50,7 +51,8 @@ class ProductApi extends ProductClient{
         );
         ResponseObject responseObject = ResponseObject.fromJson(response.data);
         if (response.statusCode == 200) {
-
+          List<Product> datas = List<Product>.from(responseObject.data.map((jsonData) => Product.fromJson(jsonData)));
+          return datas;
         } else {
           debugPrint("get products: Server not response!");
           return ServerResponse.noResponse;

@@ -1,3 +1,4 @@
+import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -21,11 +22,8 @@ class IconBottomBar extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SizedBox(height: 32, child: Icon(icon, size: 30, color: selected ? theme.primaryColor : Colors.blueGrey[400])),
-        const SizedBox(
-          height: 10,
-        ),
-        Text(text, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14, height: 0.1, color: selected ? theme.primaryColor : Colors.blueGrey[400]))
+        SizedBox(height: 32, child: Icon(icon, color: selected ? theme.primaryColor : Colors.blueGrey[400])),
+        FxText.bodySmall(text,  color: selected ? theme.primaryColor : Colors.blueGrey[400])
       ],
     );
   }

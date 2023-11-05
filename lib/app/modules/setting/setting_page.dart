@@ -1,6 +1,8 @@
 import 'package:fashion_app/app/modules/login/login_controller.dart';
+import 'package:fashion_app/app/modules/setting/delivery_address/delivery_address_page.dart';
 import 'package:fashion_app/app/modules/setting/setting_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
+import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +54,10 @@ class SettingPage extends GetView<SettingController> {
               _buildSingleRow('Thiết lập tài khoản', Icons.perm_identity, (){}),
               FxSpacing.height(20),
               _buildSingleRow('Lịch sử mua hàng', Icons.content_paste, (){}),
+              FxSpacing.height(20),
+              _buildSingleRow('Địa chỉ giao hàng', Icons.location_on_outlined, (){
+                Get.toNamed(AppRoutes.deliveryAddress);
+              }),
               FxSpacing.height(20),
               _buildSingleRow('Thông tin ứng dụng', FeatherIcons.eye, (){}),
               FxSpacing.height(20),

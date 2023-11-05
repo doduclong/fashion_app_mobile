@@ -5,6 +5,7 @@ import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -132,7 +133,7 @@ class HomePage extends GetView<HomeController> {
                           image:
                           './assets/images/apps/shopping/product/product-10.jpg',
                           name: "Pop corn",
-                          rate: 45.99,
+                          price: 100000,
                           context: context),
                     ),
                     Container(
@@ -141,7 +142,7 @@ class HomePage extends GetView<HomeController> {
                           image:
                           './assets/images/apps/shopping/product/product-7.jpg',
                           name: "Cosmic bang",
-                          rate: 78.99,
+                          price: 200000,
                           context: context),
                     ),
                     Container(
@@ -150,7 +151,7 @@ class HomePage extends GetView<HomeController> {
                           image:
                           './assets/images/apps/shopping/product/product-5.jpg',
                           name: "Sweet Gems",
-                          rate: 35.99,
+                          price: 300000,
                           context: context),
                     ),
                     Container(
@@ -159,7 +160,7 @@ class HomePage extends GetView<HomeController> {
                           image:
                           './assets/images/apps/shopping/product/product-2.jpg',
                           name: "Toffees",
-                          rate: 28.49,
+                          price: 500000,
                           context: context),
                     ),
                     Container(
@@ -168,7 +169,7 @@ class HomePage extends GetView<HomeController> {
                           image:
                           './assets/images/apps/shopping/product/product-3.jpg',
                           name: "Candies",
-                          rate: 15.99,
+                          price: 400000,
                           context: context),
                     ),
                   ],
@@ -197,9 +198,7 @@ class HomePage extends GetView<HomeController> {
                         name: "Sweet Gems",
                         image:
                         './assets/images/apps/shopping/product/product-5.jpg',
-                        shopName: 'El Primo',
-                        star: 4.5,
-                        price: 1470,
+                        price: 500000,
                         context: context
                       ),
                     ),
@@ -208,9 +207,7 @@ class HomePage extends GetView<HomeController> {
                         name: "Lipsticks",
                         image:
                         './assets/images/apps/shopping/product/product-4.jpg',
-                        shopName: 'Bee Lipstore',
-                        star: 3.8,
-                        price: 1486,
+                        price: 400000,
                         context: context
                       ),
                     ),
@@ -219,9 +216,7 @@ class HomePage extends GetView<HomeController> {
                         name: "Candies",
                         image:
                         './assets/images/apps/shopping/product/product-3.jpg',
-                        shopName: 'Bee Lipstore',
-                        star: 4,
-                        price: 1456,
+                        price: 300000,
                         context: context
                       ),
                     ),
@@ -234,7 +229,7 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget singleItemWidget(
-      {required String image, required String name, double? rate, BuildContext? context}) {
+      {required String image, required String name, double? price, BuildContext? context}) {
     //String key = Generator.randomString(10);
     return InkWell(
       onTap: () {
@@ -250,7 +245,7 @@ class HomePage extends GetView<HomeController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(4)),
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
             child: Image.asset(
               image,
               height: 120,
@@ -262,7 +257,7 @@ class HomePage extends GetView<HomeController> {
             child: FxText.bodyMedium(name,
                 letterSpacing: 0, muted: true, fontWeight: 600, color: theme.colorScheme.onBackground),
           ),
-          FxText.bodyMedium("\$ $rate", color: theme.colorScheme.onBackground),
+          FxText.bodyMedium(NumberFormat.decimalPattern().format(price), color: theme.colorScheme.onBackground),
         ],
       ),
     );
@@ -289,29 +284,19 @@ class HomePage extends GetView<HomeController> {
   Widget singleForYouWidget(
       {required String name,
         required String image,
-        required String shopName,
-        required double star,
         int? price,
         BuildContext? context}) {
-    //String key = Generator.randomString(10);
     return FxContainer.bordered(
       color: Colors.transparent,
       paddingAll: 16,
       borderRadiusAll: 4,
       margin: FxSpacing.bottom(16),
       onTap: () {
-        // Navigator.push(
-        //     context!,
-        //     MaterialPageRoute(
-        //         builder: (context) => ShoppingProductScreen(
-        //           //heroTag: key,
-        //           image: image,
-        //         )));
       },
       child: Row(
         children: <Widget>[
           ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(4)),
+            borderRadius: const BorderRadius.all(Radius.circular(4)),
             child: Image.asset(
               image,
               height: 90,
@@ -327,52 +312,12 @@ class HomePage extends GetView<HomeController> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      FxText.titleMedium(
-                        name,
-                        fontWeight: 600,
-                          color: theme.colorScheme.onBackground
-                      ),
-                      Icon(
-                        MdiIcons.heart,
-                        color: theme.colorScheme.onBackground.withAlpha(75),
-                        size: 22,
-                      )
-                    ],
+                  FxText.titleMedium(
+                    name,
+                    fontWeight: 600,
+                      color: theme.colorScheme.onBackground
                   ),
-                  Row(
-                    children: <Widget>[
-                      FxStarRating(
-                          rating: star,
-                          size: 16,
-                          inactiveColor: theme.colorScheme.onBackground),
-                      Container(
-                        margin: FxSpacing.left(8),
-                        child:
-                        FxText.bodyMedium(star.toString(), fontWeight: 600, color: theme.colorScheme.onBackground),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            MdiIcons.storeOutline,
-                            color:
-                            theme.colorScheme.onBackground.withAlpha(200),
-                            size: 20,
-                          ),
-                          FxSpacing.width(4),
-                          FxText.bodyMedium(shopName, color: theme.colorScheme.onBackground)
-                        ],
-                      ),
-                      FxText.bodyMedium("\$ $price", fontWeight: 700, color: theme.colorScheme.onBackground)
-                    ],
-                  )
+                  FxText.bodyMedium(NumberFormat.decimalPattern().format(price), fontWeight: 700, color: theme.colorScheme.onBackground)
                 ],
               ),
             ),
