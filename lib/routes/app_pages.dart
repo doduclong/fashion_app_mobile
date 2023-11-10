@@ -5,6 +5,8 @@ import 'package:fashion_app/app/modules/order/order_binding.dart';
 import 'package:fashion_app/app/modules/order/order_page.dart';
 import 'package:fashion_app/app/modules/overlay/overlay_binding.dart';
 import 'package:fashion_app/app/modules/overlay/overlay_page.dart';
+import 'package:fashion_app/app/modules/product/product_binding.dart';
+import 'package:fashion_app/app/modules/product/product_page.dart';
 import 'package:fashion_app/app/modules/setting/delivery_address/delivery_address_binding.dart';
 import 'package:fashion_app/app/modules/setting/delivery_address/delivery_address_page.dart';
 import 'package:fashion_app/routes/app_routes.dart';
@@ -38,6 +40,13 @@ class AppPages {
         name: AppRoutes.order,
         page: () => OrderPage(),
         binding: OrderBinding(),
+        transitionDuration: const Duration(milliseconds: duration),
+        transition: Transition.leftToRight),
+
+    GetPage(
+        name: AppRoutes.detailProduct,
+        page: () => ProductPage(),
+        binding: ProductBinding(),
         transitionDuration: const Duration(milliseconds: duration),
         transition: Transition.leftToRight),
   ];

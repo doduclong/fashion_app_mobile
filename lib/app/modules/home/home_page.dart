@@ -135,11 +135,14 @@ class HomePage extends GetView<HomeController> {
                     itemCount: controller.listProduct.length,
                     itemBuilder: (_, int index) {
                       Product product = controller.listProduct[index];
-                      return singleItemWidget(
-                          name: product.name ?? "",
-                          image: product.galleries![0].image ?? "",
-                          price: product.price,
-                          context: context
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 24.0),
+                        child: singleItemWidget(
+                            name: product.name ?? "",
+                            image: product.galleries![0].image ?? "",
+                            price: product.price,
+                            context: context
+                        ),
                       );
                     },
                   )),

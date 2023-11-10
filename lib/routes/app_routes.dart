@@ -7,4 +7,5 @@ class AppRoutes {
   static const home = '/home';
   static const deliveryAddress = '/delivery-address';
   static const order = '/order';
+  static const detailProduct = '/detail-product';
 }

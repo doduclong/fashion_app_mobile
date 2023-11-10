@@ -28,6 +28,10 @@ abstract class ProductClient {
   }
 
   Future getProducts();
+
+  Future searchProduct(String searchText);
+
+  Future getProductById(int id);
 }
 
 class ProductApi extends ProductClient{
@@ -53,6 +57,68 @@ class ProductApi extends ProductClient{
         if (response.statusCode == 200) {
           List<Product> datas = List<Product>.from(responseObject.data.map((jsonData) => Product.fromJson(jsonData)));
           return datas;
+        } else {
+          debugPrint("get products: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("get products: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("get products: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future searchProduct(String searchText) async{
+    final requestParam = {
+      "searchText": searchText,
+    };
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.get(
+          '$productEndpoint/search',
+          options: Options(headers: headers),
+          queryParameters: requestParam
+
+        );
+        ResponseObject responseObject = ResponseObject.fromJson(response.data);
+        if (response.statusCode == 200) {
+          List<Product> datas = List<Product>.from(responseObject.data.map((jsonData) => Product.fromJson(jsonData)));
+          return datas;
+        } else {
+          debugPrint("get products: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("get products: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("get products: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future getProductById(int id) async{
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.get(
+            '$productEndpoint/$id',
+            options: Options(headers: headers),
+
+        );
+        ResponseObject responseObject = ResponseObject.fromJson(response.data);
+        if (response.statusCode == 200) {
+          Product data = Product.fromJson(responseObject.data);
+          return data;
         } else {
           debugPrint("get products: Server not response!");
           return ServerResponse.noResponse;
