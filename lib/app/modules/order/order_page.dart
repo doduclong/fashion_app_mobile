@@ -5,7 +5,6 @@ import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -147,7 +146,7 @@ class OrderPage extends GetView<OrderController> {
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
             child: Image.asset(
-              cart.product!.description ?? "",
+              cart.product!.describe ?? "",
               height: 80,
               fit: BoxFit.fill,
             ),

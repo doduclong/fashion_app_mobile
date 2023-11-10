@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:fashion_app/app/models/cart/cart_detail.dart';
 import 'package:fashion_app/app/modules/cart/cart_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
+import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
@@ -105,6 +108,7 @@ class CartPage extends GetView<CartController> {
                             child: FxContainer(
                               onTap: () {
                                 //controller.decrement(cart);
+                                Get.toNamed(AppRoutes.order);
                               },
                               paddingAll: 4,
                               borderRadiusAll: 2,
@@ -145,11 +149,7 @@ class CartPage extends GetView<CartController> {
         children: <Widget>[
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
-            child: Image.asset(
-                cart.product!.description ?? "",
-              height: 80,
-              fit: BoxFit.fill,
-            ),
+            child: Image.memory(const Base64Decoder().convert(cart.product!.galleries![0].image ?? ""), height: 80, fit: BoxFit.fill,),
           ),
           Expanded(
             child: FxContainer.none(

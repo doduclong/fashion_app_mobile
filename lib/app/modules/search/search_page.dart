@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fashion_app/app/models/product/product.dart';
 import 'package:fashion_app/app/modules/search/search_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
@@ -124,49 +126,57 @@ class SearchPage extends GetView<SearchProductController>{
                                 topLeft: Radius.circular(16),
                                 topRight: Radius.circular(16))),
                         padding: FxSpacing.all(10),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              child: singleForYouWidget(
-                                  name: "Sweet Gems",
-                                  image:
-                                  './assets/images/apps/shopping/product/product-5.jpg',
-                                  price: 500000,
-                                  context: context
-                              ),
-                            ),
-                            Container(
-                              child: singleForYouWidget(
-                                  name: "Lipsticks",
-                                  image:
-                                  './assets/images/apps/shopping/product/product-4.jpg',
-                                  price: 400000,
-                                  context: context
-                              ),
-                            ),
-                            Container(
-                              child: singleForYouWidget(
-                                  name: "Candies",
-                                  image:
-                                  './assets/images/apps/shopping/product/product-3.jpg',
-                                  price: 300000,
-                                  context: context
-                              ),
-                            ),
-                          ],
-                        ),
+                        child:
+                        // Column(
+                        //   children: <Widget>[
+                        //     Container(
+                        //       child: singleForYouWidget(
+                        //           name: "Sweet Gems",
+                        //           image:
+                        //           './assets/images/apps/shopping/product/product-5.jpg',
+                        //           price: 500000,
+                        //           context: context
+                        //       ),
+                        //     ),
+                        //     Container(
+                        //       child: singleForYouWidget(
+                        //           name: "Lipsticks",
+                        //           image:
+                        //           './assets/images/apps/shopping/product/product-4.jpg',
+                        //           price: 400000,
+                        //           context: context
+                        //       ),
+                        //     ),
+                        //     Container(
+                        //       child: singleForYouWidget(
+                        //           name: "Candies",
+                        //           image:
+                        //           './assets/images/apps/shopping/product/product-3.jpg',
+                        //           price: 300000,
+                        //           context: context
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
 
-                        // ListView.separated(
-                        //   scrollDirection: Axis.vertical,
-                        //   shrinkWrap: true,
-                        //   itemCount: controller.listProduct.length,
-                        //   itemBuilder: (BuildContext context, int index) {
-                        //     Product product = controller.listProduct[index];
-                        //   },
-                        //   separatorBuilder: (context, index) {
-                        //     return const Divider(height: 0);
-                        //   },
-                        // )
+                        ListView.separated(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: controller.listProduct.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            Product product = controller.listProduct[index];
+                            return singleForYouWidget(
+                              name: product.name ?? "",
+                              //image: './assets/images/apps/shopping/product/product-3.jpg',
+                              image: product.galleries![0].image ?? "",
+                              price: product.price,
+                              context: context
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return const Divider(height: 0);
+                          },
+                        )
                     ),
                   ),
                 ],
@@ -191,11 +201,8 @@ class SearchPage extends GetView<SearchProductController>{
         children: <Widget>[
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
-            child: Image.asset(
-              image,
-              height: 50,
-              fit: BoxFit.fill,
-            ),
+            child:
+            Image.memory(Base64Decoder().convert(image), height: 50, fit: BoxFit.fill,),
           ),
           Expanded(
             child: FxContainer.none(

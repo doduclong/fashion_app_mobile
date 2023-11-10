@@ -1,12 +1,12 @@
 class GalleryProduct{
   int? id;
-  String? thumbnail;
+  String? image;
 
 
-  GalleryProduct({this.id, this.thumbnail});
+  GalleryProduct({this.id, this.image});
 
   factory GalleryProduct.fromJson(Map<String, dynamic> json) => GalleryProduct(
     id: json["id"],
-    thumbnail: json["thumbnail"],
+    image: json["image"],
   );
 }

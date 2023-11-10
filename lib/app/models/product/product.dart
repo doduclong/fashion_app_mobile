@@ -1,22 +1,23 @@
+import 'package:fashion_app/app/models/category.dart';
+import 'package:fashion_app/app/models/product/gallery_product.dart';
+
 class Product{
   int? id;
   String? name;
   int? price;
-  String? description;
-  String? branch;
-  int? quantity;
-  String? category;
+  String? describe;
+  Category? category;
+  List<GalleryProduct>? galleries;
 
-  Product({this.id, this.name, this.price, this.description, this.branch,
-      this.quantity, this.category});
+  Product({this.id, this.name, this.price, this.describe, this.category, this.galleries});
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
     id: json["id"],
     name: json["name"],
     price: json["price"],
-    description: json["description"],
-    branch: json["branch"],
-    quantity: json["quantity"],
-    category: json["category"],
+    describe: json["describe"],
+    category:json["category"] != null ? Category.fromJson(json["category"]) : null,
+    galleries: List<GalleryProduct>.from(json['galleries']
+        .map((value) => GalleryProduct.fromJson(value))),
   );
 }

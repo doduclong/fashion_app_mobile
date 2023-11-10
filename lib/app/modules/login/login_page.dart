@@ -1,5 +1,4 @@
 import 'package:fashion_app/app/common/stateless/custom_dialog/error_dialog.dart';
-import 'package:fashion_app/app/common/stateless/custom_dialog/success_dialog.dart';
 import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/modules/login/login_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
@@ -111,23 +110,23 @@ class LoginPage extends GetView<LoginController> {
             elevation: 0,
             borderRadiusAll: 4,
             onPressed: () async{
-              Get.toNamed(AppRoutes.home);
+              //Get.toNamed(AppRoutes.home);
 
-              // String result = await controller.login();
-              //
-              // if(result == ServerResponse.success){
-              //   Get.toNamed(AppRoutes.home);
-              // }else{
-              //   if(context.mounted){
-              //     showDialog(
-              //         context: context,
-              //         builder: (context) {
-              //           return const ErrorDialog(
-              //               icon: Icons.login,
-              //               message: "Sai thông tin đăng nhập!");
-              //         });
-              //   }
-              // }
+              String result = await controller.login();
+
+              if(result == ServerResponse.success){
+                Get.toNamed(AppRoutes.home);
+              }else{
+                if(context.mounted){
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const ErrorDialog(
+                            icon: Icons.login,
+                            message: "Sai thông tin đăng nhập!");
+                      });
+                }
+              }
             },
             splashColor: theme.colorScheme.onPrimary.withAlpha(28),
             backgroundColor: theme.colorScheme.primary,

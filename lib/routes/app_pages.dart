@@ -1,13 +1,12 @@
-import 'package:fashion_app/app/modules/home/home_binding.dart';
-import 'package:fashion_app/app/modules/home/home_page.dart';
+
 import 'package:fashion_app/app/modules/login/login_binding.dart';
 import 'package:fashion_app/app/modules/login/login_page.dart';
+import 'package:fashion_app/app/modules/order/order_binding.dart';
 import 'package:fashion_app/app/modules/order/order_page.dart';
 import 'package:fashion_app/app/modules/overlay/overlay_binding.dart';
 import 'package:fashion_app/app/modules/overlay/overlay_page.dart';
 import 'package:fashion_app/app/modules/setting/delivery_address/delivery_address_binding.dart';
 import 'package:fashion_app/app/modules/setting/delivery_address/delivery_address_page.dart';
-import 'package:fashion_app/app/modules/splash/splash_page.dart';
 import 'package:fashion_app/routes/app_routes.dart';
 import 'package:get/get.dart';
 

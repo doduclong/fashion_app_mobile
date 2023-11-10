@@ -1,5 +1,5 @@
+import 'package:fashion_app/app/data/services/cart_api.dart';
 import 'package:fashion_app/app/models/cart/cart_detail.dart';
-import 'package:fashion_app/app/models/product/product.dart';
 import 'package:get/get.dart';
 
 class CartController extends GetxController{
@@ -24,21 +24,28 @@ class CartController extends GetxController{
     return totalMoney;
   }
 
+  void getListCartDetail() async{
+    try{
+      listCartDetail.value =await CartApi().getCartDetail();
+    }catch(e){
+      print(e);
+    }
+  }
+
   @override
   void onInit() {
-    listCartDetail.add(
-        CartDetail(
-            product: Product(
-                id: 1,
-                name: "Áo polo",
-                description: './assets/images/apps/shopping/product/product-5.jpg',
-                branch: "HM",
-                category: null,
-                price: 300000,
-                quantity: 3
-            ),
-            quantity: 3)
-    );
+    getListCartDetail();
+    // listCartDetail.add(
+    //     CartDetail(
+    //         product: Product(
+    //             id: 1,
+    //             name: "Áo polo",
+    //             describe: './assets/images/apps/shopping/product/product-5.jpg',
+    //             category: null,
+    //             price: 300000,
+    //         ),
+    //         quantity: 3)
+    // );
     super.onInit();
   }
 }

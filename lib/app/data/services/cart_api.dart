@@ -1,7 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:fashion_app/app/data/constant/environment.dart';
-import 'package:fashion_app/app/models/product/product.dart';
+import 'package:fashion_app/app/models/cart/cart_detail.dart';
 import 'package:fashion_app/app/models/response/response_object.dart';
 import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/modules/login/login_controller.dart';
@@ -9,11 +9,11 @@ import 'package:fashion_app/core/values/app_value.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-abstract class ProductClient {
+abstract class CartClient {
   List<String> ids = [];
   late Dio dio;
 
-  ProductClient() {
+  CartClient() {
     dio = Dio();
     initialize();
   }
@@ -27,11 +27,11 @@ abstract class ProductClient {
     dio.options.receiveTimeout = const Duration(milliseconds: AppValue.timeout);
   }
 
-  Future getProducts();
+  Future getCartDetail();
 }
 
-class ProductApi extends ProductClient{
-  static const productEndpoint = "/product";
+class CartApi extends CartClient{
+  static const cartEndpoint = "/cart";
 
 
   Map<String, dynamic> headers = {'Authorization': 'Bearer ${Get
@@ -40,18 +40,18 @@ class ProductApi extends ProductClient{
       .value}'};
 
   @override
-  Future getProducts() async{
+  Future getCartDetail() async{
     try {
       final connectivityResult = await Connectivity().checkConnectivity();
       //Kiểm tra xem có kết nối mạng hay không
       if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
         final response = await dio.get(
-          '$productEndpoint/getAll',
+          '$cartEndpoint/',
           options: Options(headers: headers),
         );
         ResponseObject responseObject = ResponseObject.fromJson(response.data);
         if (response.statusCode == 200) {
-          List<Product> datas = List<Product>.from(responseObject.data.map((jsonData) => Product.fromJson(jsonData)));
+          List<CartDetail> datas = List<CartDetail>.from(responseObject.data["listCartDetail"].map((jsonData) => CartDetail.fromJson(jsonData)));
           return datas;
         } else {
           debugPrint("get products: Server not response!");
