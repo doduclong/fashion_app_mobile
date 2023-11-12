@@ -1,4 +1,6 @@
 
+import 'package:fashion_app/app/modules/cart/cart_binding.dart';
+import 'package:fashion_app/app/modules/cart/cart_page.dart';
 import 'package:fashion_app/app/modules/login/login_binding.dart';
 import 'package:fashion_app/app/modules/login/login_page.dart';
 import 'package:fashion_app/app/modules/order/order_binding.dart';
@@ -47,6 +49,13 @@ class AppPages {
         name: AppRoutes.detailProduct,
         page: () => ProductPage(),
         binding: ProductBinding(),
+        transitionDuration: const Duration(milliseconds: duration),
+        transition: Transition.leftToRight),
+
+    GetPage(
+        name: AppRoutes.cart,
+        page: () => CartPage(),
+        binding: CartBinding(),
         transitionDuration: const Duration(milliseconds: duration),
         transition: Transition.leftToRight),
   ];

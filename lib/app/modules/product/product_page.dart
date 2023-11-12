@@ -1,7 +1,11 @@
 import 'dart:convert';
 
+import 'package:fashion_app/app/common/stateless/custom_dialog/error_dialog.dart';
+import 'package:fashion_app/app/common/stateless/custom_dialog/success_dialog.dart';
+import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/modules/product/product_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
+import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +34,14 @@ class ProductPage extends GetView<ProductController>{
               "CHI TIẾT SẢN PHẨM",
               color: theme.primaryColor,
             ),
+            leading: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_new_outlined,
+                  color: theme.primaryColor,
+                )),
           ),
 
           body:
@@ -175,20 +187,50 @@ class ProductPage extends GetView<ProductController>{
                                   ),
                                   FxSpacing.width(4),
                                   FxText.bodyLarge(
-                                    "300,000",
+                                    NumberFormat.decimalPattern().format((controller.selectedProduct.value.price ?? 1) * controller.quantity.value),
                                     letterSpacing: 0.4,
                                     color: theme.colorScheme.onPrimary,
                                     fontWeight: 600,
                                   )
                                 ],
                               ),
-                              onPressed: () {
+                              onPressed: () async{
+                                String result = "";
+                                if(controller.selectedProduct.value.name != null){
+                                  result = await controller.addProductToCart(controller.selectedProduct.value.name ?? "", controller.quantity.value);
+                                }
+                                if(result == ServerResponse.success){
+                                  if (context.mounted) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return const SuccessDialog(
+                                              icon: Icons.add_shopping_cart,
+                                              message:
+                                              "Đã thêm sản phẩm vào giỏ hàng!");
+                                        });
+                                  }
+                                }else{
+                                  if (context.mounted) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return const ErrorDialog(
+                                              icon: Icons.add_shopping_cart,
+                                              message:
+                                              "Đã xảy ra lỗi!");
+                                        });
+                                  }
+                                }
 
                               },
                             ),
                           ),
                           FxSpacing.width(20),
                           FxContainer(
+                            onTap: (){
+                              Get.toNamed(AppRoutes.cart);
+                            },
                             padding: FxSpacing.xy(12, 12),
                             borderRadiusAll: 4,
                             color: theme.colorScheme.primary.withAlpha(40),

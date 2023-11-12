@@ -1,3 +1,4 @@
+import 'package:fashion_app/app/data/services/cart_api.dart';
 import 'package:fashion_app/app/data/services/product_api.dart';
 import 'package:fashion_app/app/models/product/product.dart';
 import 'package:fashion_app/app/modules/search/search_controller.dart';
@@ -24,6 +25,18 @@ class ProductController extends GetxController{
       print(e);
     }
     isLoading.value = false;
+  }
+
+  Future addProductToCart(String nameProduct, int quantity) async{
+    isLoading.value = true;
+    try{
+      String result = await CartApi().addProductToCart(nameProduct, quantity);
+      isLoading.value = false;
+      return result;
+    }catch(e){
+      print(e);
+      isLoading.value = false;
+    }
   }
 
   @override

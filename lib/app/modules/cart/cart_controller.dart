@@ -31,6 +31,11 @@ class CartController extends GetxController{
       print(e);
     }
   }
+  @override
+  void onReady() {
+    getListCartDetail();
+    super.onReady();
+  }
 
   @override
   void onInit() {
