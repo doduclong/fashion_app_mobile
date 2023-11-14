@@ -8,12 +8,17 @@ class CartController extends GetxController{
 
   void increment(CartDetail cart) {
     cart.quantity ++;
-    update();
+    updateQuantity(cart.id!, cart.quantity);
   }
 
   void decrement(CartDetail cart) {
     cart.quantity --;
-    update();
+    updateQuantity(cart.id!, cart.quantity);
+  }
+
+  void updateQuantity(int cartDetailId, int quantity) async{
+    await CartApi().updateQuantity(cartDetailId, quantity);
+    getListCartDetail();
   }
 
   int total(){
@@ -40,17 +45,6 @@ class CartController extends GetxController{
   @override
   void onInit() {
     getListCartDetail();
-    // listCartDetail.add(
-    //     CartDetail(
-    //         product: Product(
-    //             id: 1,
-    //             name: "Áo polo",
-    //             describe: './assets/images/apps/shopping/product/product-5.jpg',
-    //             category: null,
-    //             price: 300000,
-    //         ),
-    //         quantity: 3)
-    // );
     super.onInit();
   }
 }

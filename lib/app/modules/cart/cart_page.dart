@@ -32,6 +32,14 @@ class CartPage extends GetView<CartController> {
               "GIỎ HÀNG",
               color: theme.primaryColor,
             ),
+            leading: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_new_outlined,
+                  color: theme.primaryColor,
+                )),
           ),
 
             body:

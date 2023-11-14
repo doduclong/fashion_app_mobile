@@ -49,7 +49,7 @@ class DeliveryAddressApi extends DeliveryAddressClient{
       //Kiểm tra xem có kết nối mạng hay không
       if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
         final response = await dio.get(
-          deliveryAddressEndpoint,
+          '$deliveryAddressEndpoint/',
           options: Options(headers: headers),
         );
         ResponseObject responseObject = ResponseObject.fromJson(response.data);
@@ -83,11 +83,10 @@ class DeliveryAddressApi extends DeliveryAddressClient{
       //Kiểm tra xem có kết nối mạng hay không
       if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
         final response = await dio.post(
-          deliveryAddressEndpoint,
+          '$deliveryAddressEndpoint/create',
           options: Options(headers: headers),
           data: requestBody,
         );
-        ResponseObject responseObject = ResponseObject.fromJson(response.data);
         if (response.statusCode == 200) {
           return  ServerResponse.success;
         } else {

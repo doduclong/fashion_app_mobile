@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:fashion_app/app/models/cart/cart_detail.dart';
 import 'package:fashion_app/app/modules/cart/cart_controller.dart';
 import 'package:fashion_app/app/modules/order/order_controller.dart';
@@ -59,6 +61,73 @@ class OrderPage extends GetView<OrderController> {
             child: Column(
               //padding: FxSpacing.zero,
               children: <Widget>[
+                Container(
+                    decoration: BoxDecoration(
+                        color: theme.colorScheme.onPrimary,
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            topRight: Radius.circular(16))),
+                    padding: FxSpacing.all(10),
+                    child:
+                      FxContainer.bordered(
+                        color: Colors.transparent,
+                        paddingAll: 8,
+                        borderRadiusAll: 4,
+                        margin: FxSpacing.bottom(8),
+                        onTap: () {
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                                child: Icon(Icons.location_on_outlined,
+                                  color: theme.primaryColor,)),
+                            Expanded(
+                              flex: 8,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    FxText.bodyLarge("Địa chỉ nhận hàng ", color: theme.colorScheme.onBackground,),
+                                    controller.listDeliveryAddress.isNotEmpty
+                                    ? Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        FxSpacing.height(8),
+                                        FxText.bodyMedium(
+                                          controller.listDeliveryAddress[0].fullName ?? "",
+                                          color: theme.colorScheme.onBackground,
+                                          fontWeight: 600,
+                                        ),
+                                        FxSpacing.height(8),
+                                        FxText.bodyMedium(
+                                          controller.listDeliveryAddress[0].phoneNumber ?? "",
+                                          color: theme.colorScheme.onBackground,
+                                          fontWeight: 600,
+                                        ),
+                                        FxSpacing.height(8),
+                                        FxText.bodyMedium(
+                                          controller.listDeliveryAddress[0].address ?? "",
+                                          color: theme.colorScheme.onBackground,
+                                          fontWeight: 600,
+                                        ),
+                                      ],
+                                    ) : Container(),
+                                  ],
+                                )),
+                            Expanded(
+                              flex: 1,
+                              child: Icon(Icons.arrow_forward_ios,
+                                color: theme.primaryColor,),
+                            ),
+                          ],
+                        ),
+                      ),
+
+
+                ),
+
                 Expanded(
                   child: Container(
                       decoration: BoxDecoration(
@@ -104,7 +173,6 @@ class OrderPage extends GetView<OrderController> {
                           flex: 3,
                           child: FxContainer(
                             onTap: () {
-                              //controller.decrement(cart);
                             },
                             paddingAll: 4,
                             borderRadiusAll: 2,
@@ -145,11 +213,7 @@ class OrderPage extends GetView<OrderController> {
         children: <Widget>[
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
-            child: Image.asset(
-              cart.product!.describe ?? "",
-              height: 80,
-              fit: BoxFit.fill,
-            ),
+            child: Image.memory(const Base64Decoder().convert(cart.product!.galleries![0].image ?? ""), height: 80, fit: BoxFit.fill,),
           ),
           Expanded(
             child: FxContainer.none(

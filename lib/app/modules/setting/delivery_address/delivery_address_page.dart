@@ -2,15 +2,13 @@ import 'package:fashion_app/app/common/stateless/custom_dialog/error_dialog.dart
 import 'package:fashion_app/app/common/stateless/custom_dialog/success_dialog.dart';
 import 'package:fashion_app/app/models/delivery_address_model.dart';
 import 'package:fashion_app/app/models/response/server_response.dart';
-import 'package:fashion_app/app/modules/login/login_controller.dart';
 import 'package:fashion_app/app/modules/setting/delivery_address/delivery_address_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DeliveryAddressPage extends GetView<DeliveryAddressController> {
 
@@ -200,7 +198,7 @@ class DeliveryAddressPage extends GetView<DeliveryAddressController> {
                                                           .text;
                                                   if (fullName.isNotEmpty && address.isNotEmpty && phoneNumber.isNotEmpty) {
                                                     String result = await controller
-                                                        .createDeliveryAddress(address, fullName, address);
+                                                        .createDeliveryAddress(address, fullName, phoneNumber);
                                                     if (result == ServerResponse.success) {
                                                       if (context.mounted) {
                                                         Get.back();
@@ -243,7 +241,29 @@ class DeliveryAddressPage extends GetView<DeliveryAddressController> {
                     )),
             ],
           ),
-          body: Padding(
+          body:
+          Obx(()=>controller.isLoading.value
+              ? Container(
+            color: Colors.white,
+            width: double.maxFinite,
+            height: double.maxFinite,
+            child: Center(
+              child: SpinKitThreeInOut(
+                size: 50.0,
+                itemBuilder: (_, int index) {
+                  return DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: index.isEven
+                          ? theme.scaffoldBackgroundColor
+                          : theme.primaryColor,
+                    ),
+                  );
+                },
+              ),
+            ),
+          )
+          : Padding(
             padding: const EdgeInsets.all(10.0),
             child: ListView.separated(
               scrollDirection: Axis.vertical,
@@ -261,7 +281,7 @@ class DeliveryAddressPage extends GetView<DeliveryAddressController> {
                   return const Divider(height: 0);
                 },
             ),
-          ),
+          ),)
         ));
   }
 

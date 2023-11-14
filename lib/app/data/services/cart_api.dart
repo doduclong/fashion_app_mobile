@@ -30,6 +30,8 @@ abstract class CartClient {
   Future getCartDetail();
 
   Future addProductToCart(String nameProduct, int quantity);
+
+  Future updateQuantity(int cartDetailId, int quantity);
 }
 
 class CartApi extends CartClient{
@@ -82,6 +84,38 @@ class CartApi extends CartClient{
       if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
         final response = await dio.post(
           '$cartEndpoint/add-product',
+          options: Options(headers: headers),
+          data: requestBody,
+        );
+        if (response.statusCode == 200) {
+          return  ServerResponse.success;
+        } else {
+          debugPrint("create delivery address: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("create delivery address: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("create delivery address: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future updateQuantity(int cartDetailId, int quantity) async{
+    final requestBody = {
+      "cartDetailId": cartDetailId,
+      "quantity": quantity,
+    };
+
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.post(
+          '$cartEndpoint/update-quantity',
           options: Options(headers: headers),
           data: requestBody,
         );
