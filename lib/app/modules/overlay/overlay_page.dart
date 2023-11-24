@@ -55,31 +55,17 @@ class OverlayPage extends GetView<OverlayController> {
                           ),
                         ),
                       )),
-                  // Expanded(
-                  //     child: InkWell(
-                  //       onTap: () {
-                  //         controller.onItemTapped(2);
-                  //       },
-                  //       child: Padding(
-                  //         padding: const EdgeInsets.only(bottom: 5, right: 10),
-                  //         child: IconBottomBar(
-                  //           text: "Giỏ hàng",
-                  //           icon: Icons.shopping_cart_outlined,
-                  //           selected: controller.currentIndex.value == 2 ? true : false,
-                  //         ),
-                  //       ),
-                  //     )),
                   Expanded(
                       child: InkWell(
                         onTap: () {
-                          controller.onItemTapped(3);
+                          controller.onItemTapped(2);
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 5),
                           child: IconBottomBar(
                             text: "Cài đặt",
                             icon: Icons.settings,
-                            selected: controller.currentIndex.value == 3 ? true : false,
+                            selected: controller.currentIndex.value == 2 ? true : false,
                           ),
                         ),
                       )),

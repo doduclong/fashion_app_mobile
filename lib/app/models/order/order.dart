@@ -1,26 +1,31 @@
+import 'package:fashion_app/app/models/order/order_detail.dart';
+
 class Order{
   int? id;
+  List<OrderDetail>? listOrderDetail;
   int? totalMoney;
-  String? timeOrder;
-  String? payment;
   String? note;
-  String? fullName;
-  String? address;
-  String? phoneNumber;
+  String? payment;
+  String? receiverName;
+  String? receiverPhone;
+  String? receiverAddress;
+  String? timeOrder;
   String? status;
 
-  Order({this.id, this.totalMoney, this.timeOrder, this.payment, this.note,
-      this.fullName, this.address, this.phoneNumber, this.status});
+  Order({this.id,this.listOrderDetail, this.totalMoney, this.timeOrder, this.payment, this.note,
+      this.receiverName, this.receiverAddress, this.receiverPhone, this.status});
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
     id: json["id"],
-    totalMoney: json["totalMoney"],
+    listOrderDetail: List<OrderDetail>.from(json['listOrderDetail']
+        .map((value) => OrderDetail.fromJson(value))),
+    totalMoney: json["total"],
     timeOrder: json["timeOrder"],
     payment: json["payment"],
     note: json["note"],
-    fullName: json["fullName"],
-    address: json["address"],
-    phoneNumber: json["phoneNumber"],
+    receiverName: json["receiverName"],
+    receiverAddress: json["receiverAddress"],
+    receiverPhone: json["receiverPhone"],
     status: json["status"],
   );
 }

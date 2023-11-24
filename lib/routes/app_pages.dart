@@ -3,6 +3,8 @@ import 'package:fashion_app/app/modules/cart/cart_binding.dart';
 import 'package:fashion_app/app/modules/cart/cart_page.dart';
 import 'package:fashion_app/app/modules/login/login_binding.dart';
 import 'package:fashion_app/app/modules/login/login_page.dart';
+import 'package:fashion_app/app/modules/order/my_order/my_order_binding.dart';
+import 'package:fashion_app/app/modules/order/my_order/my_order_page.dart';
 import 'package:fashion_app/app/modules/order/order_binding.dart';
 import 'package:fashion_app/app/modules/order/order_page.dart';
 import 'package:fashion_app/app/modules/overlay/overlay_binding.dart';
@@ -71,8 +73,8 @@ class AppPages {
 
     GetPage(
         name: AppRoutes.myOrder,
-        page: () => AllProductPage(),
-        binding: AllProductBinding(),
+        page: () => MyOrderPage(),
+        binding: MyOrderBinding(),
         transitionDuration: const Duration(milliseconds: duration),
         transition: Transition.leftToRight),
   ];

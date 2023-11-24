@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:fashion_app/app/common/stateless/custom_dialog/error_dialog.dart';
 import 'package:fashion_app/app/models/cart/cart_detail.dart';
 import 'package:fashion_app/app/modules/cart/cart_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
@@ -115,8 +116,21 @@ class CartPage extends GetView<CartController> {
                             flex: 3,
                             child: FxContainer(
                               onTap: () {
-                                //controller.decrement(cart);
-                                Get.toNamed(AppRoutes.order);
+                                if(controller.selectedCartDetails.isNotEmpty){
+                                  Get.toNamed(AppRoutes.order);
+                                }else{
+                                  if (context.mounted) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return const ErrorDialog(
+                                            icon: Icons.add_shopping_cart,
+                                            message:
+                                            "Vui lòng chọn sản phẩm!");
+                                    });
+                                  }
+                                }
+
                               },
                               paddingAll: 4,
                               borderRadiusAll: 2,
@@ -144,7 +158,7 @@ class CartPage extends GetView<CartController> {
 
 
   Widget singleForYouWidget(
-        CartDetail cart,
+        CartDetail cartDetail,
         BuildContext? context) {
     return FxContainer.bordered(
       color: Colors.transparent,
@@ -153,91 +167,99 @@ class CartPage extends GetView<CartController> {
       margin: FxSpacing.bottom(8),
       onTap: () {
       },
-      child: Row(
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(4)),
-            child: Image.memory(const Base64Decoder().convert(cart.product!.galleries![0].image ?? ""), height: 80, fit: BoxFit.fill,),
-          ),
-          Expanded(
-            child: FxContainer.none(
-              height: 80,
-              color: Colors.transparent,
-              margin: FxSpacing.left(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  FxText.titleMedium(
-                      cart.product!.name ?? "",
-                      fontWeight: 600,
-                      color: theme.colorScheme.onBackground
-                  ),
-                  FxText.bodyMedium(NumberFormat.decimalPattern().format(cart.product!.price), fontWeight: 700, color: theme.colorScheme.onBackground),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      FxText.titleMedium(
-                          "Size: ${cart.size}",
-                          fontWeight: 600,
-                          color: theme.colorScheme.onBackground
-                      ),
-                      FxSpacing.width(14),
-
-                      Container(
-                        child: Row(
-                          children: [
-                            FxContainer(
-                              onTap: () {
-                                controller.decrement(cart);
-                              },
-                              paddingAll: 4,
-                              borderRadiusAll: 2,
-                              border: Border.all(
-                                  color: theme.colorScheme.primary.withAlpha(120)),
-                              color: theme.colorScheme.primary.withAlpha(28),
-
-                              child: Icon(
-                                FeatherIcons.minus,
-                                size: 12,
-                                color: theme.colorScheme.primary,
-                              ),
-                            ),
-                            FxSpacing.width(8),
-                            FxText.bodyMedium(
-                              cart.quantity.toString(),
-                              color: theme.colorScheme.onBackground,
-                              fontWeight: 700,
-                            ),
-                            FxSpacing.width(8),
-
-                            FxContainer(
-                              onTap: () {
-                                controller.increment(cart);
-                              },
-                              paddingAll: 4,
-                              borderRadiusAll: 2,
-                              border: Border.all(color: theme.colorScheme.primary),
-                              color: theme.colorScheme.primary,
-                              child: Icon(
-                                FeatherIcons.plus,
-                                size: 12,
-                                color: theme.colorScheme.onPrimary,
-                              ),
-                            ),
-                          ],
+      child:Obx(()=> CheckboxListTile(
+        contentPadding: EdgeInsets.zero,
+        controlAffinity: ListTileControlAffinity.leading,
+        title: Row(
+          children: <Widget>[
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(4)),
+              child: Image.memory(const Base64Decoder().convert(cartDetail.product!.galleries![0].image ?? ""), height: 80, fit: BoxFit.fill,),
+            ),
+            Expanded(
+              child: FxContainer.none(
+                height: 80,
+                color: Colors.transparent,
+                margin: FxSpacing.left(8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    FxText.titleMedium(
+                        cartDetail.product!.name ?? "",
+                        fontWeight: 600,
+                        color: theme.colorScheme.onBackground
+                    ),
+                    FxText.bodyMedium(NumberFormat.decimalPattern().format(cartDetail.product!.price), fontWeight: 700, color: theme.colorScheme.onBackground),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FxText.titleMedium(
+                            "Size: ${cartDetail.size}",
+                            fontWeight: 600,
+                            color: theme.colorScheme.onBackground
                         ),
-                      )
+                        FxSpacing.width(14),
 
-                    ],
-                  ),
+                        Container(
+                          child: Row(
+                            children: [
+                              FxContainer(
+                                onTap: () {
+                                  controller.decrement(cartDetail);
+                                },
+                                paddingAll: 4,
+                                borderRadiusAll: 2,
+                                border: Border.all(
+                                    color: theme.colorScheme.primary.withAlpha(120)),
+                                color: theme.colorScheme.primary.withAlpha(28),
 
-                ],
+                                child: Icon(
+                                  FeatherIcons.minus,
+                                  size: 12,
+                                  color: theme.colorScheme.primary,
+                                ),
+                              ),
+                              FxSpacing.width(8),
+                              FxText.bodyMedium(
+                                cartDetail.quantity.toString(),
+                                color: theme.colorScheme.onBackground,
+                                fontWeight: 700,
+                              ),
+                              FxSpacing.width(8),
+
+                              FxContainer(
+                                onTap: () {
+                                  controller.increment(cartDetail);
+                                },
+                                paddingAll: 4,
+                                borderRadiusAll: 2,
+                                border: Border.all(color: theme.colorScheme.primary),
+                                color: theme.colorScheme.primary,
+                                child: Icon(
+                                  FeatherIcons.plus,
+                                  size: 12,
+                                  color: theme.colorScheme.onPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+
+                      ],
+                    ),
+
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
+        value: controller.selectedCartDetails.contains(cartDetail),
+        onChanged: (isChecked) {
+          controller.addIdToList(cartDetail,isChecked!);
+        },
+      )),
     );
   }
 }

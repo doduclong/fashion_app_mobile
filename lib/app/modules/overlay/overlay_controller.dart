@@ -1,4 +1,3 @@
-import 'package:fashion_app/app/modules/cart/cart_page.dart';
 import 'package:fashion_app/app/modules/home/home_page.dart';
 import 'package:fashion_app/app/modules/search/search_page.dart';
 import 'package:fashion_app/app/modules/setting/setting_page.dart';
@@ -10,7 +9,6 @@ class OverlayController extends GetxController {
   List overlayViewSelect = [
     HomePage(),
     SearchPage(),
-    CartPage(),
     SettingPage(),
   ];
 

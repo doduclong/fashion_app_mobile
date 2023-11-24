@@ -1,5 +1,4 @@
 import 'package:fashion_app/app/modules/login/login_controller.dart';
-import 'package:fashion_app/app/modules/setting/delivery_address/delivery_address_page.dart';
 import 'package:fashion_app/app/modules/setting/setting_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
 import 'package:fashion_app/routes/app_routes.dart';
@@ -46,14 +45,16 @@ class SettingPage extends GetView<SettingController> {
                         fit: BoxFit.fill),
                   ),
                   FxSpacing.height(8),
-                  FxText.titleMedium(Get.find<LoginController>().storedFullName.value ?? "", color: theme.colorScheme.onBackground,
+                  FxText.titleMedium(Get.find<LoginController>().storedFullName.value, color: theme.colorScheme.onBackground,
                       fontWeight: 600, letterSpacing: 0),
                 ],
               ),
               FxSpacing.height(20),
               _buildSingleRow('Thiết lập tài khoản', Icons.perm_identity, (){}),
               FxSpacing.height(20),
-              _buildSingleRow('Lịch sử mua hàng', Icons.content_paste, (){}),
+              _buildSingleRow('Đơn hàng của tôi', Icons.content_paste, (){
+                Get.toNamed(AppRoutes.myOrder);
+              }),
               FxSpacing.height(20),
               _buildSingleRow('Địa chỉ giao hàng', Icons.location_on_outlined, (){
                 Get.toNamed(AppRoutes.deliveryAddress);

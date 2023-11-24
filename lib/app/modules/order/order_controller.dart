@@ -13,6 +13,7 @@ class OrderController extends GetxController{
   Rx<DeliveryAddressModel> selectedAddress = Rx<DeliveryAddressModel>(DeliveryAddressModel());
   TextEditingController noteControl = TextEditingController();
   final listSelectedItem = <OrderDetailRequest>[].obs;
+  final listSelectedCartDetailId = <int>[].obs;
   final payment = "Tiền mặt".obs;
 
 
@@ -26,7 +27,7 @@ class OrderController extends GetxController{
 
   Future order(List<OrderDetailRequest> orderDetails) async{
     try{
-      String result = await OrderApi().order(orderDetails, payment.value, noteControl.text, selectedAddress.value.fullName ?? "", selectedAddress.value.address ?? "", selectedAddress.value.phoneNumber ?? "");
+      String result = await OrderApi().order(orderDetails, payment.value, noteControl.text, selectedAddress.value.fullName ?? "", selectedAddress.value.address ?? "", selectedAddress.value.phoneNumber ?? "", listSelectedCartDetailId);
       return result;
     }catch(e){
       print(e);
@@ -34,8 +35,9 @@ class OrderController extends GetxController{
   }
 
   Future getDataFromCart() async{
-    for(int i=0; i< Get.find<CartController>().listCartDetail.length; i++){
-      listSelectedItem.add(OrderDetailRequest(name: Get.find<CartController>().listCartDetail[i].product!.name!, quantity: Get.find<CartController>().listCartDetail[i].quantity, size: Get.find<CartController>().listCartDetail[i].size));
+    for(int i=0; i< Get.find<CartController>().selectedCartDetails.length; i++){
+      listSelectedItem.add(OrderDetailRequest(name: Get.find<CartController>().selectedCartDetails[i].product!.name!, quantity: Get.find<CartController>().selectedCartDetails[i].quantity, size: Get.find<CartController>().selectedCartDetails[i].size));
+      listSelectedCartDetailId.add(Get.find<CartController>().selectedCartDetails[i].id!);
     }
   }
 

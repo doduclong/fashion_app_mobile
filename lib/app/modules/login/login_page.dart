@@ -115,7 +115,7 @@ class LoginPage extends GetView<LoginController> {
               String result = await controller.login();
 
               if(result == ServerResponse.success){
-                Get.toNamed(AppRoutes.home);
+                Get.offAndToNamed(AppRoutes.home);
               }else{
                 if(context.mounted){
                   showDialog(

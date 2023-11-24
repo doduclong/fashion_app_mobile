@@ -7,6 +7,7 @@ import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/modules/cart/cart_controller.dart';
 import 'package:fashion_app/app/modules/order/order_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
+import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
@@ -244,9 +245,9 @@ class OrderPage extends GetView<OrderController> {
                       ListView.builder(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
-                        itemCount: Get.find<CartController>().listCartDetail.length,
+                        itemCount: Get.find<CartController>().selectedCartDetails.length,
                         itemBuilder: (BuildContext context, int index) {
-                          CartDetail cartDetail = Get.find<CartController>().listCartDetail[index];
+                          CartDetail cartDetail = Get.find<CartController>().selectedCartDetails[index];
                           return Container(
                             child: singleForYouWidget(
                                 cartDetail,context
@@ -295,6 +296,7 @@ class OrderPage extends GetView<OrderController> {
                                                       message:
                                                       "Đặt hàng thành công!");
                                                 });
+                                            Get.offNamedUntil(AppRoutes.myOrder, (route) => route.isFirst);
                                           }
                                         }else{
                                           if (context.mounted) {
@@ -308,7 +310,6 @@ class OrderPage extends GetView<OrderController> {
                                                 });
                                           }
                                         }
-                                        Get.back();
                                       });
                                   });
                             },
