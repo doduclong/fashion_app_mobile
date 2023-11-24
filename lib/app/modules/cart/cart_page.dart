@@ -175,45 +175,60 @@ class CartPage extends GetView<CartController> {
                   ),
                   FxText.bodyMedium(NumberFormat.decimalPattern().format(cart.product!.price), fontWeight: 700, color: theme.colorScheme.onBackground),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      FxContainer(
-                        onTap: () {
-                          controller.decrement(cart);
-                        },
-                        paddingAll: 4,
-                        borderRadiusAll: 2,
-                        border: Border.all(
-                            color: theme.colorScheme.primary.withAlpha(120)),
-                        color: theme.colorScheme.primary.withAlpha(28),
+                      FxText.titleMedium(
+                          "Size: ${cart.size}",
+                          fontWeight: 600,
+                          color: theme.colorScheme.onBackground
+                      ),
+                      FxSpacing.width(14),
 
-                        child: Icon(
-                          FeatherIcons.minus,
-                          size: 12,
-                          color: theme.colorScheme.primary,
-                        ),
-                      ),
-                      FxSpacing.width(8),
-                      FxText.bodyMedium(
-                        cart.quantity.toString(),
-                        color: theme.colorScheme.onBackground,
-                        fontWeight: 700,
-                      ),
-                      FxSpacing.width(8),
+                      Container(
+                        child: Row(
+                          children: [
+                            FxContainer(
+                              onTap: () {
+                                controller.decrement(cart);
+                              },
+                              paddingAll: 4,
+                              borderRadiusAll: 2,
+                              border: Border.all(
+                                  color: theme.colorScheme.primary.withAlpha(120)),
+                              color: theme.colorScheme.primary.withAlpha(28),
 
-                      FxContainer(
-                        onTap: () {
-                          controller.increment(cart);
-                        },
-                        paddingAll: 4,
-                        borderRadiusAll: 2,
-                        border: Border.all(color: theme.colorScheme.primary),
-                        color: theme.colorScheme.primary,
-                        child: Icon(
-                          FeatherIcons.plus,
-                          size: 12,
-                          color: theme.colorScheme.onPrimary,
+                              child: Icon(
+                                FeatherIcons.minus,
+                                size: 12,
+                                color: theme.colorScheme.primary,
+                              ),
+                            ),
+                            FxSpacing.width(8),
+                            FxText.bodyMedium(
+                              cart.quantity.toString(),
+                              color: theme.colorScheme.onBackground,
+                              fontWeight: 700,
+                            ),
+                            FxSpacing.width(8),
+
+                            FxContainer(
+                              onTap: () {
+                                controller.increment(cart);
+                              },
+                              paddingAll: 4,
+                              borderRadiusAll: 2,
+                              border: Border.all(color: theme.colorScheme.primary),
+                              color: theme.colorScheme.primary,
+                              child: Icon(
+                                FeatherIcons.plus,
+                                size: 12,
+                                color: theme.colorScheme.onPrimary,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
+                      )
+
                     ],
                   ),
 

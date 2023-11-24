@@ -7,6 +7,8 @@ import 'package:fashion_app/app/modules/order/order_binding.dart';
 import 'package:fashion_app/app/modules/order/order_page.dart';
 import 'package:fashion_app/app/modules/overlay/overlay_binding.dart';
 import 'package:fashion_app/app/modules/overlay/overlay_page.dart';
+import 'package:fashion_app/app/modules/product/all_product/all_product_binding.dart';
+import 'package:fashion_app/app/modules/product/all_product/all_product_page.dart';
 import 'package:fashion_app/app/modules/product/product_binding.dart';
 import 'package:fashion_app/app/modules/product/product_page.dart';
 import 'package:fashion_app/app/modules/setting/delivery_address/delivery_address_binding.dart';
@@ -30,6 +32,7 @@ class AppPages {
         binding: OverlayBinding(),
         transitionDuration: const Duration(milliseconds: duration),
         transition: Transition.leftToRight),
+
 
     GetPage(
         name: AppRoutes.deliveryAddress,
@@ -56,6 +59,20 @@ class AppPages {
         name: AppRoutes.cart,
         page: () => CartPage(),
         binding: CartBinding(),
+        transitionDuration: const Duration(milliseconds: duration),
+        transition: Transition.leftToRight),
+
+    GetPage(
+        name: AppRoutes.allProduct,
+        page: () => AllProductPage(),
+        binding: AllProductBinding(),
+        transitionDuration: const Duration(milliseconds: duration),
+        transition: Transition.leftToRight),
+
+    GetPage(
+        name: AppRoutes.myOrder,
+        page: () => AllProductPage(),
+        binding: AllProductBinding(),
         transitionDuration: const Duration(milliseconds: duration),
         transition: Transition.leftToRight),
   ];

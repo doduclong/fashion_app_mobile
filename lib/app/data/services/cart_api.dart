@@ -29,7 +29,7 @@ abstract class CartClient {
 
   Future getCartDetail();
 
-  Future addProductToCart(String nameProduct, int quantity);
+  Future addProductToCart(String nameProduct, int quantity, String size);
 
   Future updateQuantity(int cartDetailId, int quantity);
 }
@@ -72,10 +72,11 @@ class CartApi extends CartClient{
   }
 
   @override
-  Future addProductToCart(String nameProduct, int quantity) async{
+  Future addProductToCart(String nameProduct, int quantity, String size) async{
     final requestBody = {
       "name": nameProduct,
       "quantity": quantity,
+      "size" : size,
     };
 
     try {

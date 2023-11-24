@@ -4,12 +4,12 @@ import 'package:fashion_app/app/models/product/product.dart';
 import 'package:fashion_app/app/modules/home/home_controller.dart';
 import 'package:fashion_app/app/modules/login/login_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
+import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class HomePage extends GetView<HomeController> {
   HomePage({super.key});
@@ -34,36 +34,32 @@ class HomePage extends GetView<HomeController> {
                           letterSpacing: 0, fontWeight: 600, color: theme.colorScheme.onBackground,),
                       InkWell(
                         onTap: () {
-                          // Navigator.of(context).push(MaterialPageRoute<void>(
-                          //     builder: (BuildContext context) {
-                          //       return NotificationDialog();
-                          //     },
-                          //     fullscreenDialog: true));
+                          Get.toNamed(AppRoutes.cart);
                         },
                         child: Stack(
                           clipBehavior: Clip.none,
                           children: <Widget>[
                             Icon(
-                              MdiIcons.bellOutline,
+                              Icons.shopping_cart_outlined,
                               color: theme.colorScheme.onBackground,
                             ),
-                            Positioned(
-                              right: -2,
-                              top: -2,
-                              child: FxContainer.rounded(
-                                padding: FxSpacing.zero,
-                                height: 14,
-                                width: 14,
-                                color: theme.colorScheme.primary,
-                                child: Center(
-                                  child: FxText.labelSmall(
-                                    "2",
-                                    color: theme.colorScheme.onPrimary,
-                                    fontSize: 9,
-                                  ),
-                                ),
-                              ),
-                            )
+                            // Positioned(
+                            //   right: -2,
+                            //   top: -2,
+                            //   child: FxContainer.rounded(
+                            //     padding: FxSpacing.zero,
+                            //     height: 14,
+                            //     width: 14,
+                            //     color: theme.colorScheme.primary,
+                            //     child: Center(
+                            //       child: FxText.labelSmall(
+                            //         "2",
+                            //         color: theme.colorScheme.onPrimary,
+                            //         fontSize: 9,
+                            //       ),
+                            //     ),
+                            //   ),
+                            // )
                           ],
                         ),
                       )
@@ -121,8 +117,13 @@ class HomePage extends GetView<HomeController> {
                     children: <Widget>[
                       FxText.bodyLarge("Bán chạy",
                           fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground),
-                      FxText.bodySmall("Xem tất cả",
-                          color: theme.colorScheme.primary, letterSpacing: 0, )
+                      InkWell(
+                        onTap: (){
+                          Get.toNamed(AppRoutes.allProduct);
+                        },
+                        child: FxText.bodySmall("Xem tất cả",
+                            color: theme.colorScheme.primary, letterSpacing: 0, ),
+                      )
                     ],
                   ),
                 ),

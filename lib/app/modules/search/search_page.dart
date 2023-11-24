@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:fashion_app/app/models/product/product.dart';
 import 'package:fashion_app/app/modules/search/search_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
@@ -9,6 +9,7 @@ import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -107,7 +108,17 @@ class SearchPage extends GetView<SearchProductController>{
                                 fillColor: customTheme.card,
                                 suffixIcon: IconButton(
                                     icon: const Icon(Icons.image_outlined),
-                                    onPressed: () {},
+                                    onPressed: () async{
+                                      ImagePicker picker = ImagePicker();
+
+                                      XFile? image =
+                                          await picker.pickImage(source: ImageSource.gallery);
+
+                                      if (image != null) {
+                                        File file = File(image.path);
+                                        await controller.searchByImage(file);
+                                      }
+                                    },
                                     iconSize: 22,
                                     color: theme.primaryColor),
                                 isDense: true,
@@ -122,7 +133,8 @@ class SearchPage extends GetView<SearchProductController>{
                       ],
                     ),
                   ),
-                  Expanded(
+                  controller.listProduct.isNotEmpty
+                   ? Expanded(
                     child: Container(
                         decoration: BoxDecoration(
                             color: theme.colorScheme.onPrimary,
@@ -147,6 +159,9 @@ class SearchPage extends GetView<SearchProductController>{
                           },
                         )
                     ),
+                  )
+                  : Container(
+                    child: FxText.bodyLarge("Không có sản phẩm phù hợp", color: theme.colorScheme.onBackground,),
                   ),
                 ],
               ),

@@ -9,6 +9,8 @@ class ProductController extends GetxController{
   final isLoading = false.obs;
   Rx<Product> selectedProduct = Rx<Product>(Product());
   final quantity = 1.obs;
+  final selectedSize = ''.obs;
+  final existQuantity = 0.obs;
 
   void increaseQuantity(){
     quantity.value ++;
@@ -31,7 +33,7 @@ class ProductController extends GetxController{
   Future addProductToCart(String nameProduct, int quantity) async{
     isLoading.value = true;
     try{
-      String result = await CartApi().addProductToCart(nameProduct, quantity);
+      String result = await CartApi().addProductToCart(nameProduct, quantity, selectedSize.value);
       Get.find<CartController>().getListCartDetail();
       isLoading.value = false;
       return result;
@@ -44,6 +46,8 @@ class ProductController extends GetxController{
   @override
   void onInit() {
     getProductById(Get.find<SearchProductController>().selectedProduct.value.id!);
+    existQuantity.value = Get.find<SearchProductController>().selectedProduct.value.sizes![0].quantity ?? 0;
+    selectedSize.value = Get.find<SearchProductController>().selectedProduct.value.sizes![0].size ?? "";
     super.onInit();
   }
 }

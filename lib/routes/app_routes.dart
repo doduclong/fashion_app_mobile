@@ -9,4 +9,6 @@ class AppRoutes {
   static const deliveryAddress = '/delivery-address';
   static const order = '/order';
   static const detailProduct = '/detail-product';
+  static const allProduct = '/all-product';
+  static const myOrder = '/my-order';
 }

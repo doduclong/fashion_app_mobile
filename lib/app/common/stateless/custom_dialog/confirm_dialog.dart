@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 class ConfirmDialog extends StatelessWidget {
   final String title;
   final String message;
-  final IconData icon;
   final void Function()? btnOkOnPress;
-  const ConfirmDialog({required this.title, required this.icon,required this.message, required this.btnOkOnPress,super.key});
+  const ConfirmDialog({required this.title,required this.message, required this.btnOkOnPress,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,6 @@ class ConfirmDialog extends StatelessWidget {
                     child: FxText.titleMedium(title, fontWeight: 600, color: theme.colorScheme.onBackground,),
                   ),
                 ),
-                Icon(icon, color: theme.primaryColor,)
               ],
             ),
             const Divider(),

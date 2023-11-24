@@ -1,6 +1,9 @@
 import 'dart:convert';
-
+import 'package:fashion_app/app/common/stateless/custom_dialog/confirm_dialog.dart';
+import 'package:fashion_app/app/common/stateless/custom_dialog/error_dialog.dart';
+import 'package:fashion_app/app/common/stateless/custom_dialog/success_dialog.dart';
 import 'package:fashion_app/app/models/cart/cart_detail.dart';
+import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/modules/cart/cart_controller.dart';
 import 'package:fashion_app/app/modules/order/order_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
@@ -28,9 +31,18 @@ class OrderPage extends GetView<OrderController> {
             centerTitle: true,
             backgroundColor: const Color(0xffffffff),
             title: FxText.titleMedium(
-              "GIỎ HÀNG",
+              "ĐẶT HÀNG",
               color: theme.primaryColor,
             ),
+
+            leading: IconButton(
+                onPressed: () {
+                  Get.back();
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_new_outlined,
+                  color: theme.primaryColor,
+                )),
           ),
 
           body:
@@ -86,7 +98,7 @@ class OrderPage extends GetView<OrderController> {
                                   color: theme.primaryColor,)),
                             Expanded(
                               flex: 8,
-                                child: Column(
+                                child:Obx(()=> Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     FxText.bodyLarge("Địa chỉ nhận hàng ", color: theme.colorScheme.onBackground,),
@@ -96,30 +108,121 @@ class OrderPage extends GetView<OrderController> {
                                       children: [
                                         FxSpacing.height(8),
                                         FxText.bodyMedium(
-                                          controller.listDeliveryAddress[0].fullName ?? "",
+                                          controller.selectedAddress.value.fullName ?? "",
                                           color: theme.colorScheme.onBackground,
                                           fontWeight: 600,
                                         ),
                                         FxSpacing.height(8),
                                         FxText.bodyMedium(
-                                          controller.listDeliveryAddress[0].phoneNumber ?? "",
+                                          controller.selectedAddress.value.phoneNumber ?? "",
                                           color: theme.colorScheme.onBackground,
                                           fontWeight: 600,
                                         ),
                                         FxSpacing.height(8),
                                         FxText.bodyMedium(
-                                          controller.listDeliveryAddress[0].address ?? "",
+                                          controller.selectedAddress.value.address ?? "",
                                           color: theme.colorScheme.onBackground,
                                           fontWeight: 600,
                                         ),
                                       ],
                                     ) : Container(),
                                   ],
-                                )),
+                                ))),
                             Expanded(
                               flex: 1,
-                              child: Icon(Icons.arrow_forward_ios,
-                                color: theme.primaryColor,),
+                              child: IconButton(
+                                onPressed: (){
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                            backgroundColor: CustomTheme.gray,
+                                            shape: const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft: Radius.circular(0),
+                                                    topRight: Radius.circular(0))),
+                                            contentPadding: const EdgeInsets.only(
+                                                top: 20, left: 10, right: 10, bottom: 10),
+                                            alignment: Alignment.center,
+                                            insetPadding: EdgeInsets.zero,
+                                            titlePadding: const EdgeInsets.all(0),
+                                            title: Container(
+                                              padding: const EdgeInsets.only(top: 20),
+                                              decoration: BoxDecoration(
+                                                  color: CustomTheme.gray,
+                                                  borderRadius: const BorderRadius.only(
+                                                      topLeft: Radius.circular(10),
+                                                      topRight: Radius.circular(10))),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  const SizedBox(width: 32,),
+                                                  FxText.titleMedium(
+                                                    "Chọn địa chỉ",
+                                                    color: theme.primaryColor,
+                                                  ),
+                                                  IconButton(
+                                                      onPressed: () {
+                                                        Get.back();
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.close,
+                                                        color: customTheme.colorError,
+                                                      )),
+
+                                                ],
+                                              ),
+                                            ),
+                                            content: SizedBox(
+                                              height: MediaQuery.of(context).size.height,
+                                              width: double.maxFinite,
+                                              child: ListView.builder(
+                                                itemCount: controller.listDeliveryAddress.length,
+                                                itemBuilder: (_, int index) {
+                                                  return
+                                                    Obx(() => FxCard(
+                                                      margin: FxSpacing.nTop(8),
+                                                      paddingAll: 0,
+                                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                                      borderRadiusAll: 10,
+                                                      child: FxContainer(
+                                                        color: customTheme.onInfo,
+                                                        paddingAll: 0,
+                                                        child: CheckboxListTile(
+                                                          checkboxShape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(50)),
+                                                          title: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              FxText.bodyMedium(
+                                                                controller.listDeliveryAddress[index].fullName!, color: theme.colorScheme.onBackground,),
+
+                                                              FxText.bodyMedium(
+                                                                controller.listDeliveryAddress[index].phoneNumber!, color: theme.colorScheme.onBackground,),
+
+                                                              FxText.bodyMedium(
+                                                                controller.listDeliveryAddress[index].address!, color: theme.colorScheme.onBackground,),
+                                                            ],
+                                                          ),
+                                                          value: controller.selectedAddress.value.id == controller.listDeliveryAddress[index].id,
+                                                          onChanged: (isChecked) {
+                                                            controller.selectedAddress.value =  controller.listDeliveryAddress[index];
+                                                          },
+
+                                                        ),
+                                                      ),
+                                                    ));
+                                                },
+                                              ),
+                                            ),);
+                                      });
+
+
+                                },
+                                icon: Icon(Icons.arrow_forward_ios,
+                                  color: theme.primaryColor,),
+                              ),
                             ),
                           ],
                         ),
@@ -172,7 +275,42 @@ class OrderPage extends GetView<OrderController> {
                         Expanded(
                           flex: 3,
                           child: FxContainer(
-                            onTap: () {
+                            onTap: () async{
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return ConfirmDialog(
+                                      title: "Xác nhận đặt hàng",
+                                      message:
+                                      "Bạn muốn đặt đơn hàng này?",
+                                      btnOkOnPress: () async{
+                                        String result = await controller.order(controller.listSelectedItem.value);
+                                        if(result == ServerResponse.success){
+                                          if (context.mounted) {
+                                            await showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return const SuccessDialog(
+                                                      icon: Icons.add_shopping_cart,
+                                                      message:
+                                                      "Đặt hàng thành công!");
+                                                });
+                                          }
+                                        }else{
+                                          if (context.mounted) {
+                                            await showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return const ErrorDialog(
+                                                      icon: Icons.add_shopping_cart,
+                                                      message:
+                                                      "Đã xảy ra lỗi!");
+                                                });
+                                          }
+                                        }
+                                        Get.back();
+                                      });
+                                  });
                             },
                             paddingAll: 4,
                             borderRadiusAll: 2,
@@ -182,7 +320,7 @@ class OrderPage extends GetView<OrderController> {
 
                             child: Center(
                               child: FxText.bodyLarge(
-                                "Đặt hàng",
+                                "Xác nhận",
                                 color: theme.colorScheme.onPrimary,
                               ),
                             ),
@@ -230,10 +368,20 @@ class OrderPage extends GetView<OrderController> {
                       color: theme.colorScheme.onBackground
                   ),
                   FxText.bodyMedium(NumberFormat.decimalPattern().format(cart.product!.price), fontWeight: 700, color: theme.colorScheme.onBackground),
-                  FxText.bodyMedium(
-                    cart.quantity.toString(),
-                    color: theme.colorScheme.onBackground,
-                    fontWeight: 700,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      FxText.bodyMedium(
+                        "Kích thước: ${cart.size}",
+                        color: theme.colorScheme.onBackground,
+                        fontWeight: 700,
+                      ),
+                      FxText.bodyMedium(
+                        "Số lượng: ${cart.quantity}",
+                        color: theme.colorScheme.onBackground,
+                        fontWeight: 700,
+                      ),
+                    ],
                   ),
 
                 ],
