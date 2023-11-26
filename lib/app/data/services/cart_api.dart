@@ -29,7 +29,11 @@ abstract class CartClient {
 
   Future getCartDetail();
 
+  Future getQuantityItem();
+
   Future addProductToCart(String nameProduct, int quantity, String size);
+
+  Future removeProductFromCart(int id);
 
   Future updateQuantity(int cartDetailId, int quantity);
 }
@@ -58,15 +62,15 @@ class CartApi extends CartClient{
           List<CartDetail> datas = List<CartDetail>.from(responseObject.data["listCartDetail"].map((jsonData) => CartDetail.fromJson(jsonData)));
           return datas;
         } else {
-          debugPrint("get products: Server not response!");
+          debugPrint("get cart: Server not response!");
           return ServerResponse.noResponse;
         }
       } else {
-        debugPrint("get products: No connectivity!");
+        debugPrint("get cart: No connectivity!");
         return ServerResponse.noConnectivity;
       }
     } on Exception {
-      debugPrint("get products: Error found!");
+      debugPrint("get cart: Error found!");
       return ServerResponse.connectionFailed;
     }
   }
@@ -132,6 +136,60 @@ class CartApi extends CartClient{
       }
     } on Exception {
       debugPrint("create delivery address: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future removeProductFromCart(int id) async{
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.delete(
+          '$cartEndpoint/remove-product/$id',
+          options: Options(headers: headers),
+        );
+        if (response.statusCode == 200) {
+          return  ServerResponse.success;
+        } else {
+          debugPrint("remove product from cart: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("remove product from cart: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("remove product from cart: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future getQuantityItem() async{
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.get(
+          '$cartEndpoint/',
+          options: Options(headers: headers),
+        );
+        ResponseObject responseObject = ResponseObject.fromJson(response.data);
+        if (response.statusCode == 200) {
+          List<CartDetail> datas = List<CartDetail>.from(responseObject.data["listCartDetail"].map((jsonData) => CartDetail.fromJson(jsonData)));
+          return datas.length;
+        } else {
+          debugPrint("get cart: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("get cart: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("get cart: Error found!");
       return ServerResponse.connectionFailed;
     }
   }

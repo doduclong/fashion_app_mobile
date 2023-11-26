@@ -43,23 +43,26 @@ class HomePage extends GetView<HomeController> {
                               Icons.shopping_cart_outlined,
                               color: theme.colorScheme.onBackground,
                             ),
-                            // Positioned(
-                            //   right: -2,
-                            //   top: -2,
-                            //   child: FxContainer.rounded(
-                            //     padding: FxSpacing.zero,
-                            //     height: 14,
-                            //     width: 14,
-                            //     color: theme.colorScheme.primary,
-                            //     child: Center(
-                            //       child: FxText.labelSmall(
-                            //         "2",
-                            //         color: theme.colorScheme.onPrimary,
-                            //         fontSize: 9,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // )
+                            Obx(()=>Visibility(
+                              visible: controller.cartItems > 0,
+                              child: Positioned(
+                                right: -2,
+                                top: -2,
+                                child: FxContainer.rounded(
+                                  padding: FxSpacing.zero,
+                                  height: 14,
+                                  width: 14,
+                                  color: theme.colorScheme.primary,
+                                  child: Center(
+                                    child: FxText.labelSmall(
+                                      controller.cartItems.toString(),
+                                      color: theme.colorScheme.onPrimary,
+                                      fontSize: 9,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ))
                           ],
                         ),
                       )
@@ -90,7 +93,7 @@ class HomePage extends GetView<HomeController> {
                               ),
                               FxText.labelMedium("Colorful Sandal",
                                   fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground),
-                              FxText.bodySmall("\$ 49.99",
+                              FxText.bodySmall("700,000",
                                   fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground)
                             ],
                           ),

@@ -3,7 +3,7 @@ import 'package:fashion_app/app/data/services/order_api.dart';
 import 'package:fashion_app/app/models/delivery_address_model.dart';
 import 'package:fashion_app/app/models/request/order_detail_request.dart';
 import 'package:fashion_app/app/modules/cart/cart_controller.dart';
-import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
+import 'package:fashion_app/app/modules/home/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -33,6 +33,7 @@ class OrderController extends GetxController{
     try{
       //String result = await OrderApi().order(orderDetails, payment.value, noteControl.text, selectedAddress.value.fullName ?? "", selectedAddress.value.address ?? "", selectedAddress.value.phoneNumber ?? "", listSelectedCartDetailId);
       String result = await OrderApi().order(orderDetails, payment.value, noteControl.text, fullNameControl.text, addressControl.text, phoneNumberControl.text, listSelectedCartDetailId);
+      Get.find<HomeController>().getQuantityItemCart();
       return result;
     }catch(e){
       print(e);

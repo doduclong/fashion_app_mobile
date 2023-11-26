@@ -33,6 +33,7 @@ class MyOrderPage extends GetView<MyOrderController> {
             leading: IconButton(
                 onPressed: () {
                   Get.back();
+                  //Get.offAndToNamed(AppRoutes.home);
                 },
                 icon: Icon(
                   Icons.arrow_back_ios_new_outlined,
@@ -179,7 +180,41 @@ class MyOrderPage extends GetView<MyOrderController> {
               FxText.titleMedium(NumberFormat.decimalPattern().format(order.totalMoney), color: theme.colorScheme.onBackground,),
             ],
           ),
-
+          const Divider(),
+          Row(
+            children: [
+              Icon(Icons.person_2_outlined),
+              FxSpacing.width(8),
+              Flexible(child: FxText.titleMedium("${order.receiverName}", color: theme.colorScheme.onBackground,)),
+            ],
+          ),
+          Row(
+            children: [
+              Icon(Icons.phone),
+              FxSpacing.width(8),
+              Flexible(child: FxText.titleMedium("${order.receiverPhone}", color: theme.colorScheme.onBackground,)),
+            ],
+          ),
+          Row(
+            children: [
+              Icon(Icons.home_outlined),
+              FxSpacing.width(8),
+              Flexible(child: FxText.titleMedium("${order.receiverAddress}", color: theme.colorScheme.onBackground,)),
+            ],
+          ),
+          Visibility(
+              visible: order.note != "",
+              child: const Divider()),
+          Visibility(
+            visible: order.note != "",
+            child: Row(
+              children: [
+                Icon(Icons.note_alt_outlined),
+                FxSpacing.width(8),
+                Flexible(child: FxText.titleMedium("${order.note}", color: theme.colorScheme.onBackground,)),
+              ],
+            ),
+          ),
           const Divider(),
 
           Visibility(
