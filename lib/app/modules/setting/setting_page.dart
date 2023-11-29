@@ -50,7 +50,9 @@ class SettingPage extends GetView<SettingController> {
                 ],
               ),
               FxSpacing.height(20),
-              _buildSingleRow('Thiết lập tài khoản', Icons.manage_accounts, (){}),
+              _buildSingleRow('Thiết lập tài khoản', Icons.manage_accounts, (){
+                Get.toNamed(AppRoutes.profile);
+              }),
               FxSpacing.height(20),
               _buildSingleRow('Đơn hàng của tôi', Icons.content_paste, (){
                 Get.toNamed(AppRoutes.myOrder);
