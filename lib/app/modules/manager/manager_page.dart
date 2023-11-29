@@ -1,5 +1,5 @@
 import 'package:fashion_app/app/modules/login/login_controller.dart';
-import 'package:fashion_app/app/modules/setting/setting_controller.dart';
+import 'package:fashion_app/app/modules/manager/manager_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
 import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
@@ -9,9 +9,9 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class SettingPage extends GetView<SettingController> {
+class ManagerPage extends GetView<ManagerController> {
 
-  SettingPage({super.key});
+  ManagerPage({super.key});
 
   ThemeData theme = AppTheme.theme;
   CustomTheme customTheme = AppTheme.customTheme;
@@ -26,7 +26,7 @@ class SettingPage extends GetView<SettingController> {
             centerTitle: true,
             backgroundColor: const Color(0xffffffff),
             title: FxText.titleMedium(
-              "CÀI ĐẶT",
+              "Quản lý",
               color: theme.primaryColor,
             ),
           ),
@@ -34,46 +34,22 @@ class SettingPage extends GetView<SettingController> {
             padding: FxSpacing.fromLTRB(
                 20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
             children: [
-              Column(
-                children: <Widget>[
-                  const FxContainer.rounded(
-                    paddingAll: 0,
-                    width: 80,
-                    height: 80,
-                    child: Image(
-                        image: AssetImage("./assets/images/profile/avatar_3.jpg"),
-                        fit: BoxFit.fill),
-                  ),
-                  FxSpacing.height(8),
-                  FxText.titleMedium(Get.find<LoginController>().storedFullName.value, color: theme.colorScheme.onBackground,
-                      fontWeight: 600, letterSpacing: 0),
-                ],
-              ),
               FxSpacing.height(20),
-              _buildSingleRow('Thiết lập tài khoản', Icons.perm_identity, (){}),
-              FxSpacing.height(20),
-              _buildSingleRow('Đơn hàng của tôi', Icons.content_paste, (){
-                Get.toNamed(AppRoutes.myOrder);
+              _buildSingleRow('Quản lý tài khoản', Icons.perm_identity, (){
+                Get.toNamed(AppRoutes.managerUser);
               }),
               FxSpacing.height(20),
-              _buildSingleRow('Địa chỉ giao hàng', Icons.location_on_outlined, (){
-                Get.toNamed(AppRoutes.deliveryAddress);
+              _buildSingleRow('Đơn hàng danh mục', Icons.category_outlined, (){
+                Get.toNamed(AppRoutes.managerCategory);
               }),
               FxSpacing.height(20),
-              _buildSingleRow('Thông tin ứng dụng', FeatherIcons.eye, (){}),
-
-              Visibility(
-                visible: Get.find<LoginController>().storedRole.value != "USER",
-                  child: Column(
-                children: [
-                  FxSpacing.height(20),
-                  _buildSingleRow('Quản lý', Icons.location_on_outlined, (){
-                    Get.toNamed(AppRoutes.manager);
-                  }),
-                ],
-              )),
-
-
+              _buildSingleRow('Quản lý sản phẩm', Icons.h_mobiledata_sharp, (){
+                Get.toNamed(AppRoutes.managerProduct);
+              }),
+              FxSpacing.height(20),
+              _buildSingleRow('Quản lý đơn hàng', Icons.shopping_cart_outlined, (){
+                Get.toNamed(AppRoutes.managerOrder);
+              }),
               FxSpacing.height(20),
 
               Center(

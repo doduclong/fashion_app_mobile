@@ -3,6 +3,16 @@ import 'package:fashion_app/app/modules/cart/cart_binding.dart';
 import 'package:fashion_app/app/modules/cart/cart_page.dart';
 import 'package:fashion_app/app/modules/login/login_binding.dart';
 import 'package:fashion_app/app/modules/login/login_page.dart';
+import 'package:fashion_app/app/modules/manager/manager_binding.dart';
+import 'package:fashion_app/app/modules/manager/manager_category/manager_category_binding.dart';
+import 'package:fashion_app/app/modules/manager/manager_category/manager_category_page.dart';
+import 'package:fashion_app/app/modules/manager/manager_order/manager_order_binding.dart';
+import 'package:fashion_app/app/modules/manager/manager_order/manager_order_page.dart';
+import 'package:fashion_app/app/modules/manager/manager_page.dart';
+import 'package:fashion_app/app/modules/manager/manager_product/manager_product_binding.dart';
+import 'package:fashion_app/app/modules/manager/manager_product/manager_product_page.dart';
+import 'package:fashion_app/app/modules/manager/manager_user/manager_user_binding.dart';
+import 'package:fashion_app/app/modules/manager/manager_user/manager_user_page.dart';
 import 'package:fashion_app/app/modules/order/my_order/my_order_binding.dart';
 import 'package:fashion_app/app/modules/order/my_order/my_order_page.dart';
 import 'package:fashion_app/app/modules/order/order_binding.dart';
@@ -75,6 +85,41 @@ class AppPages {
         name: AppRoutes.myOrder,
         page: () => MyOrderPage(),
         binding: MyOrderBinding(),
+        transitionDuration: const Duration(milliseconds: duration),
+        transition: Transition.leftToRight),
+
+    GetPage(
+        name: AppRoutes.manager,
+        page: () => ManagerPage(),
+        binding: ManagerBinding(),
+        transitionDuration: const Duration(milliseconds: duration),
+        transition: Transition.leftToRight),
+
+    GetPage(
+        name: AppRoutes.managerUser,
+        page: () => ManagerUserPage(),
+        binding: ManagerUserBinding(),
+        transitionDuration: const Duration(milliseconds: duration),
+        transition: Transition.leftToRight),
+
+    GetPage(
+        name: AppRoutes.managerProduct,
+        page: () => ManagerProductPage(),
+        binding: ManagerProductBinding(),
+        transitionDuration: const Duration(milliseconds: duration),
+        transition: Transition.leftToRight),
+
+    GetPage(
+        name: AppRoutes.managerOrder,
+        page: () => ManagerOrderPage(),
+        binding: ManagerOrderBinding(),
+        transitionDuration: const Duration(milliseconds: duration),
+        transition: Transition.leftToRight),
+
+    GetPage(
+        name: AppRoutes.managerCategory,
+        page: () => ManagerCategoryPage(),
+        binding: ManagerCategoryBinding(),
         transitionDuration: const Duration(milliseconds: duration),
         transition: Transition.leftToRight),
   ];

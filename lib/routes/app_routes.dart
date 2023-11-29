@@ -11,4 +11,9 @@ class AppRoutes {
   static const detailProduct = '/detail-product';
   static const allProduct = '/all-product';
   static const myOrder = '/my-order';
+  static const manager = '/manager';
+  static const managerUser = '/manager-user';
+  static const managerProduct = '/manager-product';
+  static const managerOrder = '/manager-order';
+  static const managerCategory = '/manager-category';
 }
