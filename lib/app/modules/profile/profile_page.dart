@@ -1,5 +1,5 @@
 import 'package:fashion_app/app/modules/login/login_controller.dart';
-import 'package:fashion_app/app/modules/setting/setting_controller.dart';
+import 'package:fashion_app/app/modules/profile/profile_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
 import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
@@ -9,9 +9,9 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class SettingPage extends GetView<SettingController> {
+class ProfilePage extends GetView<ProfileController> {
 
-  SettingPage({super.key});
+  ProfilePage({super.key});
 
   ThemeData theme = AppTheme.theme;
   CustomTheme customTheme = AppTheme.customTheme;
@@ -26,7 +26,7 @@ class SettingPage extends GetView<SettingController> {
             centerTitle: true,
             backgroundColor: const Color(0xffffffff),
             title: FxText.titleMedium(
-              "CÀI ĐẶT",
+              "THÔNG TIN CÁ NHÂN",
               color: theme.primaryColor,
             ),
           ),
@@ -63,15 +63,15 @@ class SettingPage extends GetView<SettingController> {
               _buildSingleRow('Thông tin ứng dụng', FeatherIcons.eye, (){}),
 
               Visibility(
-                visible: Get.find<LoginController>().storedRole.value != "USER",
+                  visible: Get.find<LoginController>().storedRole.value != "USER",
                   child: Column(
-                children: [
-                  FxSpacing.height(20),
-                  _buildSingleRow('Quản lý', Icons.settings_applications, (){
-                    Get.toNamed(AppRoutes.manager);
-                  }),
-                ],
-              )),
+                    children: [
+                      FxSpacing.height(20),
+                      _buildSingleRow('Quản lý', Icons.settings_applications, (){
+                        Get.toNamed(AppRoutes.manager);
+                      }),
+                    ],
+                  )),
 
 
               FxSpacing.height(20),

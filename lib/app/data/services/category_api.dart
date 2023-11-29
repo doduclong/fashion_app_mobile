@@ -29,6 +29,8 @@ abstract class CategoryClient {
 
   Future getCategories();
 
+  Future createCategory(String name);
+
 }
 
 class CategoryApi extends CategoryClient{
@@ -64,6 +66,37 @@ class CategoryApi extends CategoryClient{
       }
     } on Exception {
       debugPrint("get products: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future createCategory(String name) async{
+    final requestBody = {
+      "name": name,
+    };
+
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.post(
+          '$categoryEndpoint/create',
+          options: Options(headers: headers),
+          data: requestBody,
+        );
+        if (response.statusCode == 200) {
+          return  ServerResponse.success;
+        } else {
+          debugPrint("create category: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("create category: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("create category: Error found!");
       return ServerResponse.connectionFailed;
     }
   }

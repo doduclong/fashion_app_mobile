@@ -11,7 +11,6 @@ import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';

@@ -23,6 +23,8 @@ import 'package:fashion_app/app/modules/product/all_product/all_product_binding.
 import 'package:fashion_app/app/modules/product/all_product/all_product_page.dart';
 import 'package:fashion_app/app/modules/product/product_binding.dart';
 import 'package:fashion_app/app/modules/product/product_page.dart';
+import 'package:fashion_app/app/modules/profile/profile_binding.dart';
+import 'package:fashion_app/app/modules/profile/profile_page.dart';
 import 'package:fashion_app/app/modules/setting/delivery_address/delivery_address_binding.dart';
 import 'package:fashion_app/app/modules/setting/delivery_address/delivery_address_page.dart';
 import 'package:fashion_app/routes/app_routes.dart';
@@ -120,6 +122,13 @@ class AppPages {
         name: AppRoutes.managerCategory,
         page: () => ManagerCategoryPage(),
         binding: ManagerCategoryBinding(),
+        transitionDuration: const Duration(milliseconds: duration),
+        transition: Transition.leftToRight),
+
+    GetPage(
+        name: AppRoutes.profile,
+        page: () => ProfilePage(),
+        binding: ProfileBinding(),
         transitionDuration: const Duration(milliseconds: duration),
         transition: Transition.leftToRight),
   ];
