@@ -28,10 +28,16 @@ abstract class UserInfoClient {
   }
 
   Future getUserInfo();
+
+  Future getListUser();
+
+  Future updateUserInfo(String fullName, String birthday, String phoneNumber, String gender);
+
+  Future registerAccount(String username, String password);
 }
 
 class UserInfoApi extends UserInfoClient{
-  static const userInfoEndpoint = "/user/info";
+  static const userEndpoint = "/user";
 
 
   Map<String, dynamic> headers = {'Authorization': 'Bearer ${Get
@@ -46,7 +52,7 @@ class UserInfoApi extends UserInfoClient{
       //Kiểm tra xem có kết nối mạng hay không
       if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
         final response = await dio.get(
-          userInfoEndpoint,
+          '$userEndpoint/info',
           options: Options(headers: headers),
         );
         ResponseObject responseObject = ResponseObject.fromJson(response.data);
@@ -63,6 +69,101 @@ class UserInfoApi extends UserInfoClient{
       }
     } on Exception {
       debugPrint("get user info: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future getListUser() async{
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.get(
+          '$userEndpoint/',
+          options: Options(headers: headers),
+        );
+        ResponseObject responseObject = ResponseObject.fromJson(response.data);
+        if (response.statusCode == 200) {
+          List<UserModel> datas = List<UserModel>.from(responseObject.data.map((jsonData) => UserModel.fromJson(jsonData)));
+          return datas;
+        } else {
+          debugPrint("get users: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("get users: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("get users: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future updateUserInfo(String fullName, String birthday, String phoneNumber, String gender) async{
+    final requestBody = {
+      "fullName": fullName,
+      "birthday": birthday,
+      "phoneNumber" : phoneNumber,
+      "gender": gender,
+    };
+
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.post(
+          '$userEndpoint/update',
+          options: Options(headers: headers),
+          data: requestBody,
+        );
+        if (response.statusCode == 200) {
+          return  ServerResponse.success;
+        } else {
+          debugPrint("update user: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("update user: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("update user: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future registerAccount(String username, String password) async{
+    final requestBody = {
+      "username": username,
+      "password": password,
+    };
+
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.post(
+          '$userEndpoint/create',
+          data: requestBody,
+        );
+        if (response.statusCode == 200) {
+          Get.find<LoginController>().storedToken.value = response.data["token"];
+          debugPrint("Login: Success!");
+          return  ServerResponse.success;
+        } else {
+          debugPrint("Login: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("Login: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("Login: Error found!");
       return ServerResponse.connectionFailed;
     }
   }

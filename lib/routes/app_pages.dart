@@ -3,6 +3,8 @@ import 'package:fashion_app/app/modules/cart/cart_binding.dart';
 import 'package:fashion_app/app/modules/cart/cart_page.dart';
 import 'package:fashion_app/app/modules/login/login_binding.dart';
 import 'package:fashion_app/app/modules/login/login_page.dart';
+import 'package:fashion_app/app/modules/login/register/register_binding.dart';
+import 'package:fashion_app/app/modules/login/register/register_page.dart';
 import 'package:fashion_app/app/modules/manager/manager_binding.dart';
 import 'package:fashion_app/app/modules/manager/manager_category/manager_category_binding.dart';
 import 'package:fashion_app/app/modules/manager/manager_category/manager_category_page.dart';
@@ -47,6 +49,12 @@ class AppPages {
         transitionDuration: const Duration(milliseconds: duration),
         transition: Transition.leftToRight),
 
+    GetPage(
+        name: AppRoutes.register,
+        page: () => RegisterPage(),
+        binding: RegisterBinding(),
+        transitionDuration: const Duration(milliseconds: duration),
+        transition: Transition.leftToRight),
 
     GetPage(
         name: AppRoutes.deliveryAddress,

@@ -1,3 +1,4 @@
+import 'package:fashion_app/app/models/user_model.dart';
 import 'package:fashion_app/app/modules/login/login_controller.dart';
 import 'package:fashion_app/app/modules/manager/manager_user/manager_user_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
@@ -30,110 +31,45 @@ class ManagerUserPage extends GetView<ManagerUserController> {
               color: theme.primaryColor,
             ),
           ),
-          body: ListView(
-            padding: FxSpacing.fromLTRB(
-                20, FxSpacing.safeAreaTop(context) + 20, 20, 20),
-            children: [
-              Column(
-                children: <Widget>[
-                  const FxContainer.rounded(
-                    paddingAll: 0,
-                    width: 80,
-                    height: 80,
-                    child: Image(
-                        image: AssetImage("./assets/images/profile/avatar_3.jpg"),
-                        fit: BoxFit.fill),
-                  ),
-                  FxSpacing.height(8),
-                  FxText.titleMedium(Get.find<LoginController>().storedFullName.value, color: theme.colorScheme.onBackground,
-                      fontWeight: 600, letterSpacing: 0),
-                ],
-              ),
-              FxSpacing.height(20),
-              _buildSingleRow('Thiết lập tài khoản', Icons.perm_identity, (){}),
-              FxSpacing.height(20),
-              _buildSingleRow('Đơn hàng của tôi', Icons.content_paste, (){
-                Get.toNamed(AppRoutes.myOrder);
-              }),
-              FxSpacing.height(20),
-              _buildSingleRow('Địa chỉ giao hàng', Icons.location_on_outlined, (){
-                Get.toNamed(AppRoutes.deliveryAddress);
-              }),
-              FxSpacing.height(20),
-              _buildSingleRow('Thông tin ứng dụng', FeatherIcons.eye, (){}),
-              FxSpacing.height(20),
-              _buildSingleRow('Quản lý', Icons.location_on_outlined, (){
-                Get.toNamed(AppRoutes.deliveryAddress);
-              }),
-              FxSpacing.height(20),
-
-              Center(
-                child: FxButton(
-                  elevation: 0,
-                  backgroundColor: theme.colorScheme.primary,
-                  borderRadiusAll: 4,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        MdiIcons.logoutVariant,
-                        color: theme.colorScheme.onPrimary,
-                        size: 18,
-                      ),
-                      FxSpacing.width(16),
-                      FxText.bodySmall("Đăng xuất",
-                          letterSpacing: 0.3,
-                          fontWeight: 600,
-                          color: theme.colorScheme.onPrimary)
-                    ],
-                  ),
-                  onPressed: () {
-                  },
-                ),
-              ),
-              // FxContainer(
-              //   onTap: () {
-              //     //controller.logout();
-              //   },
-              //   padding: FxSpacing.xy(20, 8),
-              //   borderRadiusAll: 4,
-              //   color: theme.colorScheme.primary,
-              //   child: Center(
-              //     child: FxText.bodySmall(
-              //       'Đăng xuất',
-              //       fontWeight: 700,
-              //       letterSpacing: 0.3,
-              //       color: theme.colorScheme.onPrimary,
-              //     ),
-              //   ),
-              // ),
-            ],
+          body: Obx(()=> Expanded(
+            child: ListView.separated(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: controller.listUser.length,
+              itemBuilder: (BuildContext context, int index) {
+                UserModel user = controller.listUser[index];
+                return userWidget(
+                    user, (){}
+                );
+              },
+              separatorBuilder: (context, index) {
+                return const Divider(height: 0);
+              },
+            ),
+          )
           ),
         ));
   }
 
-  Widget _buildSingleRow(String name, IconData icon, Function() onTap) {
+  Widget userWidget(UserModel user, Function() onTap) {
     return FxContainer(
       paddingAll: 0,
       onTap: onTap,
-      child: Row(
+      child: Column(
         children: [
-          Icon(
-            icon,
-            size: 20,
-          ),
-          FxSpacing.width(20),
           Expanded(
               child: FxText.bodyMedium(
-                name,
+                user.username ?? "",
                 color: theme.colorScheme.onBackground,
                 fontWeight: 600,
               )),
-          FxSpacing.width(20),
-          const Icon(
-            FeatherIcons.chevronRight,
-            size: 20,
-          ),
+
+          Expanded(
+              child: FxText.bodyMedium(
+                user.fullName ?? "",
+                color: theme.colorScheme.onBackground,
+                fontWeight: 600,
+              )),
         ],
       ),
     );

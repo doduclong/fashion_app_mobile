@@ -1,6 +1,7 @@
 import 'package:fashion_app/app/common/stateless/custom_dialog/error_dialog.dart';
 import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/modules/login/login_controller.dart';
+import 'package:fashion_app/app/modules/login/register/register_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
 import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
@@ -9,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 
-class LoginPage extends GetView<LoginController> {
-  LoginPage({Key? key}) : super(key: key);
+class RegisterPage extends GetView<RegisterController> {
+  RegisterPage({Key? key}) : super(key: key);
 
   ThemeData theme = AppTheme.theme;
   CustomTheme customTheme = AppTheme.customTheme;
@@ -30,7 +31,7 @@ class LoginPage extends GetView<LoginController> {
             FxSpacing.fromLTRB(20, FxSpacing.safeAreaTop(context) + 64, 20, 20),
         children: [
           FxText.displaySmall(
-            'Xin chào!',
+            'Đăng ký',
             textAlign: TextAlign.center,
             color: theme.colorScheme.onBackground,
           ),
@@ -39,6 +40,78 @@ class LoginPage extends GetView<LoginController> {
             key: controller.formKey,
             child: Column(
               children: [
+                TextFormField(
+                  style: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
+                  decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      filled: true,
+                      isDense: true,
+                      fillColor: theme.cardTheme.color,
+                      prefixIcon: Icon(
+                        FeatherIcons.mail,
+                        color: theme.colorScheme.onBackground,
+                      ),
+                      hintText: "Họ và tên",
+                      enabledBorder: outlineInputBorder,
+                      focusedBorder: outlineInputBorder,
+                      border: outlineInputBorder,
+                      contentPadding: FxSpacing.all(16),
+                      hintStyle: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
+                      isCollapsed: true),
+                  maxLines: 1,
+                  controller: controller.emailTE,
+                  validator: controller.validateEmail,
+                  cursorColor: theme.colorScheme.onBackground,
+                ),
+                FxSpacing.height(20),
+                TextFormField(
+                  style: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
+                  decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      filled: true,
+                      isDense: true,
+                      fillColor: theme.cardTheme.color,
+                      prefixIcon: Icon(
+                        FeatherIcons.mail,
+                        color: theme.colorScheme.onBackground,
+                      ),
+                      hintText: "Số điện thoại",
+                      enabledBorder: outlineInputBorder,
+                      focusedBorder: outlineInputBorder,
+                      border: outlineInputBorder,
+                      contentPadding: FxSpacing.all(16),
+                      hintStyle: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
+                      isCollapsed: true),
+                  maxLines: 1,
+                  controller: controller.emailTE,
+                  validator: controller.validateEmail,
+                  cursorColor: theme.colorScheme.onBackground,
+                ),
+                FxSpacing.height(20),
+                TextFormField(
+                  style: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
+                  decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      filled: true,
+                      isDense: true,
+                      fillColor: theme.cardTheme.color,
+                      prefixIcon: Icon(
+                        FeatherIcons.mail,
+                        color: theme.colorScheme.onBackground,
+                      ),
+                      hintText: "Email",
+                      enabledBorder: outlineInputBorder,
+                      focusedBorder: outlineInputBorder,
+                      border: outlineInputBorder,
+                      contentPadding: FxSpacing.all(16),
+                      hintStyle: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
+                      isCollapsed: true),
+                  maxLines: 1,
+                  controller: controller.emailTE,
+                  validator: controller.validateEmail,
+                  cursorColor: theme.colorScheme.onBackground,
+                ),
+                FxSpacing.height(20),
                 TextFormField(
                   style: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
                   decoration: InputDecoration(
@@ -87,22 +160,32 @@ class LoginPage extends GetView<LoginController> {
                   cursorColor: theme.colorScheme.onBackground,
                   obscureText: true,
                 ),
+                FxSpacing.height(20),
+                TextFormField(
+                  style: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
+                  decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      filled: true,
+                      isDense: true,
+                      fillColor: theme.cardTheme.color,
+                      prefixIcon: Icon(
+                        FeatherIcons.lock,
+                        color: theme.colorScheme.onBackground,
+                      ),
+                      hintText: "Nhập lại mật khẩu",
+                      enabledBorder: outlineInputBorder,
+                      focusedBorder: outlineInputBorder,
+                      border: outlineInputBorder,
+                      contentPadding: FxSpacing.all(16),
+                      hintStyle: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
+                      isCollapsed: true),
+                  maxLines: 1,
+                  controller: controller.passwordTE,
+                  validator: controller.validatePassword,
+                  cursorColor: theme.colorScheme.onBackground,
+                  obscureText: true,
+                ),
               ],
-            ),
-          ),
-          FxSpacing.height(20),
-          Align(
-            alignment: Alignment.centerRight,
-            child: FxButton.text(
-              onPressed: () {
-                //controller.goToForgotPasswordScreen();
-              },
-              padding: FxSpacing.zero,
-              splashColor: theme.colorScheme.primary.withAlpha(40),
-              child: Text(
-                "Quên mật khẩu ?",
-                style: FxTextStyle.bodySmall(color: theme.colorScheme.primary),
-              ),
             ),
           ),
           FxSpacing.height(20),
@@ -112,7 +195,7 @@ class LoginPage extends GetView<LoginController> {
             onPressed: () async{
               //Get.toNamed(AppRoutes.home);
 
-              String result = await controller.login();
+              String result = await controller.register();
 
               if(result == ServerResponse.success){
                 Get.offAndToNamed(AppRoutes.home);
@@ -123,7 +206,7 @@ class LoginPage extends GetView<LoginController> {
                       builder: (context) {
                         return const ErrorDialog(
                             icon: Icons.login,
-                            message: "Sai thông tin đăng nhập!");
+                            message: "Đăng ký không thành công!");
                       });
                 }
               }
@@ -137,7 +220,7 @@ class LoginPage extends GetView<LoginController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   FxText.labelLarge(
-                    "Đăng nhập",
+                    "Đăng ký",
                     fontWeight: 600,
                     color: theme.colorScheme.onPrimary,
                     letterSpacing: 0.4,
@@ -153,18 +236,6 @@ class LoginPage extends GetView<LoginController> {
             ),
           ),
           FxSpacing.height(20),
-          Divider(),
-          FxSpacing.height(20),
-          Center(
-            child: FxButton.text(
-                padding: FxSpacing.zero,
-                onPressed: () {
-                  Get.toNamed(AppRoutes.register);
-                },
-                child: FxText.labelLarge("Tạo tài khoản",
-                    decoration: TextDecoration.underline,
-                    color: theme.colorScheme.primary)),
-          ),
         ],
       ),
     );
