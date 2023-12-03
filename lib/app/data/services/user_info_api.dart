@@ -34,6 +34,10 @@ abstract class UserInfoClient {
   Future updateUserInfo(String fullName, String birthday, String phoneNumber, String gender);
 
   Future registerAccount(String username, String password);
+
+  Future activeUser(String username);
+
+  Future setRoleForUser(String username,String roleName);
 }
 
 class UserInfoApi extends UserInfoClient{
@@ -164,6 +168,64 @@ class UserInfoApi extends UserInfoClient{
       }
     } on Exception {
       debugPrint("Login: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future activeUser(String username) async{
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.post(
+          '$userEndpoint/active/$username',
+        );
+        if (response.statusCode == 200) {
+          return  ServerResponse.success;
+        } else {
+          debugPrint("active user: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("active user: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("active user: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future setRoleForUser(String username, String roleName) async{
+    final requestBody = {
+      "username": username,
+      "role": roleName,
+    };
+
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.post(
+          '$userEndpoint/create',
+          data: requestBody,
+        );
+        if (response.statusCode == 200) {
+          Get.find<LoginController>().storedToken.value = response.data["token"];
+          debugPrint("set role: Success!");
+          return  ServerResponse.success;
+        } else {
+          debugPrint("set role: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("set role: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("set role: Error found!");
       return ServerResponse.connectionFailed;
     }
   }

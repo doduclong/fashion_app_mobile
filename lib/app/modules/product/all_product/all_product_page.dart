@@ -146,7 +146,8 @@ class AllProductPage extends GetView<AllProductController>{
                 ),
               ],
             ),
-          ))),
+          ))
+      ),
     );
   }
 
