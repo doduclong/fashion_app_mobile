@@ -5,6 +5,13 @@ import 'package:get/get.dart';
 class ManagerUserController extends GetxController{
   final isLoading = false.obs;
   final listUser = <UserModel>[].obs;
+  final role = "".obs;
+
+  final roleList = [
+    "USER",
+    "ADMIN",
+    "MANAGER"
+  ];
 
   void getListUser() async{
     try{
@@ -16,11 +23,13 @@ class ManagerUserController extends GetxController{
 
   Future setRoleForUser(String username, String roleName) async{
     String result = await UserInfoApi().setRoleForUser(username, roleName);
+    getListUser();
     return result;
   }
 
-  Future activeUser(String username, String roleName) async{
+  Future activeUser(String username) async{
     String result = await UserInfoApi().activeUser(username);
+    getListUser();
     return result;
   }
 

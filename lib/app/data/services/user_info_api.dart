@@ -33,7 +33,7 @@ abstract class UserInfoClient {
 
   Future updateUserInfo(String fullName, String birthday, String phoneNumber, String gender);
 
-  Future registerAccount(String username, String password);
+  Future registerAccount(String username, String password, String fullName, String phoneNumber, String email);
 
   Future activeUser(String username);
 
@@ -140,10 +140,14 @@ class UserInfoApi extends UserInfoClient{
   }
 
   @override
-  Future registerAccount(String username, String password) async{
+  Future registerAccount(String username, String password, String fullName, String phoneNumber, String email) async{
     final requestBody = {
       "username": username,
       "password": password,
+      "fullName": fullName,
+      "email": email,
+      "phoneNumber": phoneNumber,
+
     };
 
     try {
@@ -180,6 +184,7 @@ class UserInfoApi extends UserInfoClient{
       if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
         final response = await dio.post(
           '$userEndpoint/active/$username',
+          options: Options(headers: headers),
         );
         if (response.statusCode == 200) {
           return  ServerResponse.success;
@@ -209,12 +214,11 @@ class UserInfoApi extends UserInfoClient{
       //Kiểm tra xem có kết nối mạng hay không
       if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
         final response = await dio.post(
-          '$userEndpoint/create',
+          '$userEndpoint/setRole',
+          options: Options(headers: headers),
           data: requestBody,
         );
         if (response.statusCode == 200) {
-          Get.find<LoginController>().storedToken.value = response.data["token"];
-          debugPrint("set role: Success!");
           return  ServerResponse.success;
         } else {
           debugPrint("set role: Server not response!");

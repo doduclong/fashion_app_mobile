@@ -1,15 +1,18 @@
+import 'package:fashion_app/app/common/stateless/custom_dialog/confirm_dialog.dart';
+import 'package:fashion_app/app/common/stateless/custom_dialog/error_dialog.dart';
+import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/models/user_model.dart';
 import 'package:fashion_app/app/modules/login/login_controller.dart';
 import 'package:fashion_app/app/modules/manager/manager_user/manager_user_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
-import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../../../common/stateless/custom_dialog/success_dialog.dart';
 
 class ManagerUserPage extends GetView<ManagerUserController> {
 
@@ -120,9 +123,42 @@ class ManagerUserPage extends GetView<ManagerUserController> {
                         child: GestureDetector(
                           behavior: HitTestBehavior.opaque,
                           onTap: () async {
-                            // await Clipboard.setData(ClipboardData(
-                            //     text: widget.content ?? ""));
-                            // Get.back();
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return ConfirmDialog(
+                                      title: "Xác nhận",
+                                      message:
+                                      "Bạn muốn kích hoạt tài khoản ${user.username}?",
+                                      btnOkOnPress: () async{
+                                        String result = await controller.activeUser(user.username!);
+                                        if(result == ServerResponse.success){
+                                          if (context.mounted) {
+                                            await showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return const SuccessDialog(
+                                                      icon: Icons.check,
+                                                      message:
+                                                      "Kích hoạt thành công!");
+                                                });
+                                            Get.back();
+                                            Get.back();
+                                          }
+                                        }else{
+                                          if (context.mounted) {
+                                            await showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return const ErrorDialog(
+                                                      icon: Icons.close,
+                                                      message:
+                                                      "Đã xảy ra lỗi!");
+                                                });
+                                          }
+                                        }
+                                      });
+                                });
                           },
                           child: Container(
                             padding:  const EdgeInsets.all(5),
@@ -141,91 +177,145 @@ class ManagerUserPage extends GetView<ManagerUserController> {
                         ),
                       ),
 
-                      GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onTap: () async {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                    backgroundColor: CustomTheme.gray,
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                                    contentPadding: const EdgeInsets.all(10),
-                                    alignment: Alignment.bottomRight,
-                                    insetPadding: const EdgeInsets.all(10),
-                                    content: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Obx(
-                                              () => DropdownButtonHideUnderline(
-                                            child: DropdownButtonFormField(
-                                              decoration: const InputDecoration(
-                                                prefixIcon: Icon(FontAwesomeIcons
-                                                    .marsAndVenus),
-                                                labelText: "Giới tính",
-                                                border: OutlineInputBorder(
-                                                  //borderSide: BorderSide(color: Color(0xFFD0D0D0)),
-                                                  borderSide: BorderSide(
-                                                      color: Colors.green),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(10)),
+                      Visibility(
+                        visible: Get.find<LoginController>().storedRole.value == "MANAGER",
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () async {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                      backgroundColor: CustomTheme.gray,
+                                      shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                                      contentPadding: const EdgeInsets.all(30),
+                                      alignment: Alignment.center,
+                                      insetPadding: const EdgeInsets.all(10),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Obx(
+                                                () => DropdownButtonHideUnderline(
+                                              child: DropdownButtonFormField(
+                                                decoration: const InputDecoration(
+                                                  prefixIcon: Icon(FontAwesomeIcons
+                                                      .criticalRole),
+                                                  labelText: "Chọn quyền",
+                                                  border: OutlineInputBorder(
+                                                    //borderSide: BorderSide(color: Color(0xFFD0D0D0)),
+                                                    borderSide: BorderSide(
+                                                        color: Colors.green),
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(10)),
+                                                  ),
+                                                  enabledBorder: OutlineInputBorder(
+                                                    //<-- SEE HERE
+                                                    borderSide: BorderSide(
+                                                        color: Color(0xFFD0D0D0)),
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(10)),
+                                                  ),
+                                                  focusedBorder: OutlineInputBorder(
+                                                    //<-- SEE HERE
+                                                    borderSide: BorderSide(
+                                                        color: Color(0xFFD0D0D0)),
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(10)),
+                                                  ),
                                                 ),
-                                                enabledBorder: OutlineInputBorder(
-                                                  //<-- SEE HERE
-                                                  borderSide: BorderSide(
-                                                      color: Color(0xFFD0D0D0)),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(10)),
-                                                ),
-                                                focusedBorder: OutlineInputBorder(
-                                                  //<-- SEE HERE
-                                                  borderSide: BorderSide(
-                                                      color: Color(0xFFD0D0D0)),
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(10)),
-                                                ),
+                                                isExpanded: true,
+                                                value:
+                                                controller.role.value.isEmpty
+                                                    ? null
+                                                    : controller.role.value,
+                                                isDense: true,
+                                                items: controller.roleList
+                                                    .map((value) {
+                                                  return DropdownMenuItem(
+                                                    value: value,
+                                                    child: Text(value),
+                                                  );
+                                                }).toList(),
+                                                onChanged: (newValue) {
+                                                  controller.role.value =
+                                                  newValue!;
+                                                },
                                               ),
-                                              isExpanded: true,
-                                              value:
-                                              controller.gender.value.isEmpty
-                                                  ? null
-                                                  : controller.gender.value,
-                                              isDense: true,
-                                              items: controller.genderList
-                                                  .map((value) {
-                                                return DropdownMenuItem(
-                                                  value: value,
-                                                  child: Text(value),
-                                                );
-                                              }).toList(),
-                                              onChanged: (newValue) {
-                                                controller.gender.value =
-                                                newValue!;
-                                              },
                                             ),
                                           ),
-                                        ),
 
-                                        const SizedBox(height: 14),
+                                          const SizedBox(height: 14),
 
-                                      ],
-                                    ) );
+                                          FxButton.block(
+                                            elevation: 0,
+                                            borderRadiusAll: 4,
+                                            onPressed: () async{
+                                              //Get.toNamed(AppRoutes.home);
 
-                              });
-                        },
-                        child: Container(
-                          padding:  const EdgeInsets.all(5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              FxText.titleMedium(
-                                "Thiết lập quyền",
-                                color: theme.primaryColor,
-                              ),
+                                              String result = await controller.setRoleForUser(user.username!, controller.role.value);
 
-                              Icon(Icons.copy, color: theme.primaryColor,)
-                            ],
+                                              if(result == ServerResponse.success){
+                                                if(context.mounted){
+                                                  await showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return const SuccessDialog(
+                                                            icon: Icons.login,
+                                                            message: "Thiết lập quyền thành công!");
+                                                      });
+                                                }
+                                                Get.back();
+                                                Get.back();
+                                              }else{
+                                                if(context.mounted){
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return const ErrorDialog(
+                                                            icon: Icons.login,
+                                                            message: "Thiết lập quyền không thành công!");
+                                                      });
+                                                }
+                                              }
+                                            },
+                                            splashColor: theme.colorScheme.onPrimary.withAlpha(28),
+                                            backgroundColor: theme.colorScheme.primary,
+                                            child: Container(
+                                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                                              decoration: BoxDecoration(),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  FxText.labelLarge(
+                                                    "Xác nhận",
+                                                    fontWeight: 600,
+                                                    color: theme.colorScheme.onPrimary,
+                                                    letterSpacing: 0.4,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+
+                                        ],
+                                      ) );
+
+                                });
+                          },
+                          child: Container(
+                            padding:  const EdgeInsets.all(5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                FxText.titleMedium(
+                                  "Thiết lập quyền",
+                                  color: theme.primaryColor,
+                                ),
+
+                                Icon(Icons.copy, color: theme.primaryColor,)
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -294,7 +384,7 @@ class ManagerUserPage extends GetView<ManagerUserController> {
                         FxText.titleMedium(
                             user.active.toString(),
                             fontWeight: 600,
-                            color: theme.colorScheme.onBackground
+                            color: user.active! ? customTheme.colorSuccess : customTheme.colorError
                         ),
                       ],
                     ),

@@ -30,6 +30,8 @@ abstract class OrderClient {
 
   Future order(List<OrderDetailRequest> orderDetails, String payment, String note, String fullName, String address, String phoneNumber, List<int> listSelectedCartDetailId);
   Future getOrdersOfUser();
+
+  Future getOrders();
 }
 
 class OrderApi extends OrderClient{
@@ -87,7 +89,35 @@ class OrderApi extends OrderClient{
       //Kiểm tra xem có kết nối mạng hay không
       if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
         final response = await dio.get(
-          '$orderEndpoint/getAll',
+          '$orderEndpoint/user',
+          options: Options(headers: headers),
+        );
+        ResponseObject responseObject = ResponseObject.fromJson(response.data);
+        if (response.statusCode == 200) {
+          List<Order> datas = List<Order>.from(responseObject.data.map((jsonData) => Order.fromJson(jsonData)));
+          return datas;
+        } else {
+          debugPrint("get orders of user: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("get  orders of user: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("get  orders of user: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future getOrders() async{
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.get(
+          '$orderEndpoint/',
           options: Options(headers: headers),
         );
         ResponseObject responseObject = ResponseObject.fromJson(response.data);
