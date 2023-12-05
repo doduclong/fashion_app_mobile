@@ -31,6 +31,8 @@ abstract class CategoryClient {
 
   Future createCategory(String name);
 
+  Future updateCategory(int id, String name);
+
 }
 
 class CategoryApi extends CategoryClient{
@@ -97,6 +99,37 @@ class CategoryApi extends CategoryClient{
       }
     } on Exception {
       debugPrint("create category: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future updateCategory(int id, String name) async{
+    final requestBody = {
+      "name": name,
+    };
+
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.put(
+          '$categoryEndpoint/$id',
+          options: Options(headers: headers),
+          data: requestBody,
+        );
+        if (response.statusCode == 200) {
+          return  ServerResponse.success;
+        } else {
+          debugPrint("update category: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("update category: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("update category: Error found!");
       return ServerResponse.connectionFailed;
     }
   }

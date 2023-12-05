@@ -196,7 +196,7 @@ class ManagerOrderPage extends GetView<ManagerOrderController> {
                                           onPressed: () async{
                                             //Get.toNamed(AppRoutes.home);
 
-                                            String result = await controller.setStatusOrder(controller.status.value);
+                                            String result = await controller.setStatusOrder(order.id!, controller.status.value);
 
                                             if(result == ServerResponse.success){
                                               if(context.mounted){
@@ -205,7 +205,7 @@ class ManagerOrderPage extends GetView<ManagerOrderController> {
                                                     builder: (context) {
                                                       return const SuccessDialog(
                                                           icon: Icons.login,
-                                                          message: "Thiết lập quyền thành công!");
+                                                          message: "Cập nhật trạng thái đơn hàng thành công!");
                                                     });
                                               }
                                               Get.back();
@@ -217,7 +217,7 @@ class ManagerOrderPage extends GetView<ManagerOrderController> {
                                                     builder: (context) {
                                                       return const ErrorDialog(
                                                           icon: Icons.login,
-                                                          message: "Thiết lập quyền không thành công!");
+                                                          message: "Cập nhật trạng thái đơn hàng không thành công!");
                                                     });
                                               }
                                             }
@@ -252,7 +252,7 @@ class ManagerOrderPage extends GetView<ManagerOrderController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               FxText.titleMedium(
-                                "Thiết lập quyền",
+                                "Cập nhật trạng thái đơn hàng",
                                 color: theme.primaryColor,
                               ),
 

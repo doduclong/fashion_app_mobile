@@ -15,7 +15,7 @@ class ManagerOrderController extends GetxController{
     "CANCELLED"
   ];
 
-  Future getMyOrder() async{
+  Future getOrders() async{
     try{
       myOrders.value = await OrderApi().getOrdersOfUser();
     }catch(e){
@@ -23,16 +23,16 @@ class ManagerOrderController extends GetxController{
     }
   }
 
-  Future setStatusOrder(String status) async{
-    // String result = await UserInfoApi().setRoleForUser(username, roleName);
-    // getListUser();
-    // return result;
+  Future setStatusOrder(int orderId, String status) async{
+    String result = await OrderApi().updateOrderStatus(orderId, status);
+    getOrders();
+    return result;
   }
 
   @override
   void onInit() async{
     isLoading.value = true;
-    await getMyOrder();
+    await getOrders();
     isLoading.value = false;
     super.onInit();
   }
