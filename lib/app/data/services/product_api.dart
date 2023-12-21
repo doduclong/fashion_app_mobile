@@ -31,6 +31,8 @@ abstract class ProductClient {
 
   Future searchProduct(String searchText);
 
+  Future searchProductByKeywords(List<String> keywords);
+
   Future getProductById(int id);
 }
 
@@ -119,6 +121,39 @@ class ProductApi extends ProductClient{
         if (response.statusCode == 200) {
           Product data = Product.fromJson(responseObject.data);
           return data;
+        } else {
+          debugPrint("get products: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("get products: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("get products: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future searchProductByKeywords(List<String> keywords) async{
+    final requestParam = {
+      "keywords": keywords,
+    };
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.get(
+            '$productEndpoint/search/keywords',
+            options: Options(headers: headers),
+            queryParameters: requestParam
+
+        );
+        ResponseObject responseObject = ResponseObject.fromJson(response.data);
+        if (response.statusCode == 200) {
+          List<Product> datas = List<Product>.from(responseObject.data.map((jsonData) => Product.fromJson(jsonData)));
+          return datas;
         } else {
           debugPrint("get products: Server not response!");
           return ServerResponse.noResponse;

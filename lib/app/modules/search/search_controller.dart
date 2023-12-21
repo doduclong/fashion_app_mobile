@@ -29,14 +29,23 @@ class SearchProductController extends GetxController{
     }
   }
 
+  void searchProductByKeywords(List<String> keywords) async{
+    try{
+      listProduct.value =await ProductApi().searchProductByKeywords(keywords);
+    }catch(e){
+      print(e);
+    }
+  }
+
   Future<String> searchByImage(File file) async{
     final bytes = file.readAsBytesSync();
 
     String img64 = base64Encode(bytes);
-    String result = await SearchImageApi().searchImage("data:image/jpeg;base64,$img64") ?? "";
-    searchProduct(result);
+    List<String> result = await SearchImageApi().searchImage("data:image/jpeg;base64,$img64") ?? "";
+    //searchProduct(result);
+    searchProductByKeywords(result);
     print(result);
-    return result;
+    return "";
   }
 
   @override

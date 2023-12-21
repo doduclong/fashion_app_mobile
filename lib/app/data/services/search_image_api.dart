@@ -16,7 +16,7 @@ class SearchImageApi extends SearchImageClient{
 
     if (response.statusCode == 200) {
       print(jsonDecode(response.body));
-      String result = jsonDecode(response.body)['result'];
+      List<String> result = List<String>.from(jsonDecode(response.body)['result']);
       print(result);
       return result;
 
