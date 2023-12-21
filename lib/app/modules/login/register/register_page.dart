@@ -1,6 +1,5 @@
 import 'package:fashion_app/app/common/stateless/custom_dialog/error_dialog.dart';
 import 'package:fashion_app/app/models/response/server_response.dart';
-import 'package:fashion_app/app/modules/login/login_controller.dart';
 import 'package:fashion_app/app/modules/login/register/register_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
 import 'package:fashion_app/routes/app_routes.dart';
@@ -28,7 +27,7 @@ class RegisterPage extends GetView<RegisterController> {
     return Scaffold(
       body: ListView(
         padding:
-            FxSpacing.fromLTRB(20, FxSpacing.safeAreaTop(context) + 64, 20, 20),
+            FxSpacing.fromLTRB(20, FxSpacing.safeAreaTop(context) + 10, 20, 20),
         children: [
           FxText.displaySmall(
             'Đăng ký',
@@ -59,7 +58,7 @@ class RegisterPage extends GetView<RegisterController> {
                       hintStyle: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
                       isCollapsed: true),
                   maxLines: 1,
-                  controller: controller.emailTE,
+                  controller: controller.usernameTE,
                   validator: controller.validateEmail,
                   cursorColor: theme.colorScheme.onBackground,
                 ),
@@ -83,7 +82,7 @@ class RegisterPage extends GetView<RegisterController> {
                       hintStyle: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
                       isCollapsed: true),
                   maxLines: 1,
-                  controller: controller.emailTE,
+                  controller: controller.usernameTE,
                   validator: controller.validateEmail,
                   cursorColor: theme.colorScheme.onBackground,
                 ),
@@ -107,7 +106,7 @@ class RegisterPage extends GetView<RegisterController> {
                       hintStyle: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
                       isCollapsed: true),
                   maxLines: 1,
-                  controller: controller.emailTE,
+                  controller: controller.usernameTE,
                   validator: controller.validateEmail,
                   cursorColor: theme.colorScheme.onBackground,
                 ),
@@ -131,7 +130,7 @@ class RegisterPage extends GetView<RegisterController> {
                       hintStyle: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
                       isCollapsed: true),
                   maxLines: 1,
-                  controller: controller.emailTE,
+                  controller: controller.usernameTE,
                   validator: controller.validateEmail,
                   cursorColor: theme.colorScheme.onBackground,
                 ),

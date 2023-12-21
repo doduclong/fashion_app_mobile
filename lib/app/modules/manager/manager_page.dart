@@ -46,7 +46,7 @@ class ManagerPage extends GetView<ManagerController> {
                 Get.toNamed(AppRoutes.managerUser);
               }),
               FxSpacing.height(20),
-              _buildSingleRow('Đơn hàng danh mục', Icons.category_outlined, (){
+              _buildSingleRow('Quản lý danh mục', Icons.category_outlined, (){
                 Get.toNamed(AppRoutes.managerCategory);
               }),
               FxSpacing.height(20),

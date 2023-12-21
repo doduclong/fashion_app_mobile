@@ -33,7 +33,11 @@ abstract class UserInfoClient {
 
   Future updateUserInfo(String fullName, String birthday, String phoneNumber, String gender);
 
-  Future registerAccount(String username, String password);
+  Future registerAccount(String username, String password, String fullName, String phoneNumber, String email);
+
+  Future activeUser(String username);
+
+  Future setRoleForUser(String username,String roleName);
 }
 
 class UserInfoApi extends UserInfoClient{
@@ -136,10 +140,14 @@ class UserInfoApi extends UserInfoClient{
   }
 
   @override
-  Future registerAccount(String username, String password) async{
+  Future registerAccount(String username, String password, String fullName, String phoneNumber, String email) async{
     final requestBody = {
       "username": username,
       "password": password,
+      "fullName": fullName,
+      "email": email,
+      "phoneNumber": phoneNumber,
+
     };
 
     try {
@@ -164,6 +172,64 @@ class UserInfoApi extends UserInfoClient{
       }
     } on Exception {
       debugPrint("Login: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future activeUser(String username) async{
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.post(
+          '$userEndpoint/active/$username',
+          options: Options(headers: headers),
+        );
+        if (response.statusCode == 200) {
+          return  ServerResponse.success;
+        } else {
+          debugPrint("active user: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("active user: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("active user: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future setRoleForUser(String username, String roleName) async{
+    final requestBody = {
+      "username": username,
+      "role": roleName,
+    };
+
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.post(
+          '$userEndpoint/setRole',
+          options: Options(headers: headers),
+          data: requestBody,
+        );
+        if (response.statusCode == 200) {
+          return  ServerResponse.success;
+        } else {
+          debugPrint("set role: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("set role: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("set role: Error found!");
       return ServerResponse.connectionFailed;
     }
   }

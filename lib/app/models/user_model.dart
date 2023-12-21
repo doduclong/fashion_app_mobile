@@ -7,9 +7,10 @@ class UserModel{
   String? email;
   String? phoneNumber;
   String? gender;
+  bool? active;
 
   UserModel({this.id, this.username, this.role, this.fullName, this.birthday, this.email,
-      this.phoneNumber, this.gender});
+      this.phoneNumber, this.gender, this.active});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
     id: json["id"],
@@ -20,5 +21,6 @@ class UserModel{
     email: json["email"],
     phoneNumber: json["phoneNumber"],
     gender: json["gender"],
+    active: json["active"],
   );
 }
