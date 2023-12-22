@@ -30,12 +30,13 @@ class SearchProductController extends GetxController{
   }
 
   Future<String> searchByImage(File file) async{
+    isLoading.value = true;
     final bytes = file.readAsBytesSync();
-
     String img64 = base64Encode(bytes);
     String result = await SearchImageApi().searchImage("data:image/jpeg;base64,$img64") ?? "";
     searchProduct(result);
     print(result);
+    isLoading.value = false;
     return result;
   }
 

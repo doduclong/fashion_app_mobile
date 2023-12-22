@@ -7,7 +7,7 @@ abstract class SearchImageClient {
 class SearchImageApi extends SearchImageClient{
   static const searchEndpoint = "/predict";
   static final _client = http.Client();
-  static var _loginUrl = Uri.parse('http://192.168.3.12:5000/predict');
+  static var _loginUrl = Uri.parse('http://192.168.190.1:5000/predict');
   @override
   Future searchImage(String image) async{
     http.Response response = await _client.post(_loginUrl,headers: {

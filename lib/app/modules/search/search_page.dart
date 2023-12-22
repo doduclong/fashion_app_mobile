@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:fashion_app/app/common/stateless/custom_dialog/custom_loading.dart';
 import 'package:fashion_app/app/models/product/product.dart';
 import 'package:fashion_app/app/modules/search/search_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
@@ -37,26 +38,7 @@ class SearchPage extends GetView<SearchProductController>{
 
             body:
             Obx(()=>controller.isLoading.value
-                ? Container(
-              color: Colors.white,
-              width: double.maxFinite,
-              height: double.maxFinite,
-              child: Center(
-                child: SpinKitThreeInOut(
-                  size: 50.0,
-                  itemBuilder: (_, int index) {
-                    return DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        color: index.isEven
-                            ? theme.scaffoldBackgroundColor
-                            : theme.primaryColor,
-                      ),
-                    );
-                  },
-                ),
-              ),
-            )
+                ? CustomCircularIndicator()
 
                 : Container(
               color: theme.scaffoldBackgroundColor,
