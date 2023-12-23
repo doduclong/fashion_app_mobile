@@ -9,13 +9,16 @@ class HomeController extends GetxController{
   final isLoading = false.obs;
   final listProduct = <Product>[].obs;
   final cartItems = 0.obs;
+  Rx<Product> selectedProduct = Rx<Product>(Product());
 
   void getProducts() async{
+    isLoading.value = true;
     try{
       listProduct.value =await ProductApi().getProducts();
     }catch(e){
       print(e);
     }
+    isLoading.value = false;
   }
 
   void getQuantityItemCart() async{

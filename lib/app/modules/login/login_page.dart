@@ -7,6 +7,7 @@ import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 class LoginPage extends GetView<LoginController> {
@@ -24,7 +25,28 @@ class LoginPage extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      Obx(()=>controller.isLoading.value
+        ? Container(
+        color: Colors.white,
+        width: double.maxFinite,
+        height: MediaQuery.of(context).size.height / 2,
+        child: Center(
+          child: SpinKitThreeInOut(
+            size: 50.0,
+            itemBuilder: (_, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  color:
+                  index.isEven ? Colors.white : theme.primaryColor,
+                ),
+              );
+            },
+          ),
+        ),
+      )
+      : Scaffold(
       body: ListView(
         padding:
             FxSpacing.fromLTRB(20, FxSpacing.safeAreaTop(context) + 64, 20, 20),
@@ -167,6 +189,6 @@ class LoginPage extends GetView<LoginController> {
           ),
         ],
       ),
-    );
+    ));
   }
 }

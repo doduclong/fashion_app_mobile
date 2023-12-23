@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:fashion_app/app/common/stateless/custom_dialog/custom_loading.dart';
 import 'package:fashion_app/app/models/product/product.dart';
 import 'package:fashion_app/app/modules/home/home_controller.dart';
 import 'package:fashion_app/app/modules/login/login_controller.dart';
+import 'package:fashion_app/app/modules/search/search_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
 import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
@@ -131,8 +133,9 @@ class HomePage extends GetView<HomeController> {
                   ),
                 ),
                 FxSpacing.height(24),
-
-                SizedBox(
+                Obx(()=>controller.isLoading.value
+                    ? CustomCircularIndicator()
+                : SizedBox(
                   height: 170,
                   child:Obx(()=> ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -142,70 +145,13 @@ class HomePage extends GetView<HomeController> {
                       return Padding(
                         padding: const EdgeInsets.only(left: 24.0),
                         child: singleItemWidget(
-                            name: product.name ?? "",
-                            image: product.galleries![0].image ?? "",
-                            price: product.price,
+                            product: product,
                             context: context
                         ),
                       );
                     },
                   )),
-                ),
-
-                // SingleChildScrollView(
-                //   scrollDirection: Axis.horizontal,
-                //   child:
-                //
-                //   Row(
-                //     children: <Widget>[
-                //       Container(
-                //         margin: FxSpacing.left(24),
-                //         child: singleItemWidget(
-                //             image:
-                //             './assets/images/apps/shopping/product/product-10.jpg',
-                //             name: "Pop corn",
-                //             price: 100000,
-                //             context: context),
-                //       ),
-                //       Container(
-                //         margin: FxSpacing.left(24),
-                //         child: singleItemWidget(
-                //             image:
-                //             './assets/images/apps/shopping/product/product-7.jpg',
-                //             name: "Cosmic bang",
-                //             price: 200000,
-                //             context: context),
-                //       ),
-                //       Container(
-                //         margin: FxSpacing.left(24),
-                //         child: singleItemWidget(
-                //             image:
-                //             './assets/images/apps/shopping/product/product-5.jpg',
-                //             name: "Sweet Gems",
-                //             price: 300000,
-                //             context: context),
-                //       ),
-                //       Container(
-                //         margin: FxSpacing.left(24),
-                //         child: singleItemWidget(
-                //             image:
-                //             './assets/images/apps/shopping/product/product-2.jpg',
-                //             name: "Toffees",
-                //             price: 500000,
-                //             context: context),
-                //       ),
-                //       Container(
-                //         margin: FxSpacing.x(24),
-                //         child: singleItemWidget(
-                //             image:
-                //             './assets/images/apps/shopping/product/product-3.jpg',
-                //             name: "Candies",
-                //             price: 400000,
-                //             context: context),
-                //       ),
-                //     ],
-                //   ),
-                // ),
+                ),),
                 Container(
                   margin: FxSpacing.nBottom(24),
                   child: Row(
@@ -231,9 +177,7 @@ class HomePage extends GetView<HomeController> {
                     itemBuilder: (BuildContext context, int index) {
                       Product product = controller.listProduct[index];
                       return singleForYouWidget(
-                          name: product.name ?? "",
-                          image: product.galleries![0].image ?? "",
-                          price: product.price,
+                          product: product,
                           context: context
                       );
                     },
@@ -249,17 +193,13 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget singleItemWidget(
-      {required String image, required String name, int? price, BuildContext? context}) {
+      {required Product product,
+        BuildContext? context}) {
     //String key = Generator.randomString(10);
     return InkWell(
       onTap: () {
-        // Navigator.push(
-        //     context!,
-        //     MaterialPageRoute(
-        //         builder: (context) => ShoppingProductScreen(
-        //           //heroTag: key,
-        //           image: image,
-        //         )));
+        Get.find<SearchProductController>().selectedProduct.value = product;
+        Get.toNamed(AppRoutes.detailProduct);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,7 +207,7 @@ class HomePage extends GetView<HomeController> {
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
             child:
-            Image.memory(const Base64Decoder().convert(image), height: 120, fit: BoxFit.fill,),
+            Image.memory(const Base64Decoder().convert(product.galleries![0].image!), height: 120, fit: BoxFit.fill,),
             // Image.asset(
             //   image,
             //   height: 120,
@@ -276,10 +216,10 @@ class HomePage extends GetView<HomeController> {
           ),
           Container(
             margin: FxSpacing.top(8),
-            child: FxText.bodyMedium(name,
+            child: FxText.bodyMedium(product.name ?? "",
                 letterSpacing: 0, muted: true, fontWeight: 600, color: theme.colorScheme.onBackground),
           ),
-          FxText.bodyMedium(NumberFormat.decimalPattern().format(price), color: theme.colorScheme.onBackground),
+          FxText.bodyMedium(NumberFormat.decimalPattern().format(product.price), color: theme.colorScheme.onBackground),
         ],
       ),
     );
@@ -304,9 +244,7 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget singleForYouWidget(
-      {required String name,
-        required String image,
-        int? price,
+      {required Product product,
         BuildContext? context}) {
     return FxContainer.bordered(
       color: Colors.transparent,
@@ -314,13 +252,15 @@ class HomePage extends GetView<HomeController> {
       borderRadiusAll: 4,
       margin: FxSpacing.bottom(16),
       onTap: () {
+        Get.find<SearchProductController>().selectedProduct.value = product;
+        Get.toNamed(AppRoutes.detailProduct);
       },
       child: Row(
         children: <Widget>[
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
             child:
-            Image.memory(const Base64Decoder().convert(image), height: 90, fit: BoxFit.fill,),
+            Image.memory(const Base64Decoder().convert(product.galleries![0].image!), height: 90, fit: BoxFit.fill,),
             // Image.asset(
             //   image,
             //   height: 90,
@@ -337,11 +277,11 @@ class HomePage extends GetView<HomeController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   FxText.titleMedium(
-                    name,
+                    product.name!,
                     fontWeight: 600,
                       color: theme.colorScheme.onBackground
                   ),
-                  FxText.bodyMedium(NumberFormat.decimalPattern().format(price), fontWeight: 700, color: theme.colorScheme.onBackground)
+                  FxText.bodyMedium(NumberFormat.decimalPattern().format(product.price), fontWeight: 700, color: theme.colorScheme.onBackground)
                 ],
               ),
             ),

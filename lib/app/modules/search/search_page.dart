@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:fashion_app/app/common/stateless/custom_dialog/custom_loading.dart';
@@ -8,7 +9,6 @@ import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +17,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 class SearchPage extends GetView<SearchProductController>{
 
   SearchPage({super.key});
-
+  Timer? _debounce;
   ThemeData theme = AppTheme.theme;
   CustomTheme customTheme = AppTheme.customTheme;
 
@@ -54,6 +54,7 @@ class SearchPage extends GetView<SearchProductController>{
                           child: GestureDetector(
                             child: TextFormField(
                               controller: controller.searchTextControl,
+                              onChanged: _onSearchChanged,
                               style: FxTextStyle.bodyLarge(
                                   letterSpacing: 0.1,
                                   color: theme.colorScheme.onBackground),
@@ -165,10 +166,13 @@ class SearchPage extends GetView<SearchProductController>{
       },
       child: Row(
         children: <Widget>[
-          ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(4)),
-            child:
-            Image.memory(const Base64Decoder().convert(product.galleries![0].image!), height: 50, fit: BoxFit.fill,),
+          Container(
+            width: 45,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(4)),
+              child:
+              Image.memory(const Base64Decoder().convert(product.galleries![0].image!), height: 50, fit: BoxFit.fill,),
+            ),
           ),
           Expanded(
             child: FxContainer.none(
@@ -192,5 +196,13 @@ class SearchPage extends GetView<SearchProductController>{
         ],
       ),
     );
+  }
+
+  _onSearchChanged(String searchText) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      controller.searchTextControl.text = searchText;
+      controller.searchProduct(searchText);
+    });
   }
 }

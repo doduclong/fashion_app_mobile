@@ -1,6 +1,5 @@
+import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:fashion_app/app/models/product/product.dart';
 import 'package:fashion_app/app/modules/manager/manager_product/manager_product_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
@@ -10,14 +9,13 @@ import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ManagerProductPage extends GetView<ManagerProductController> {
 
   ManagerProductPage({super.key});
-
+  Timer? _debounce;
   ThemeData theme = AppTheme.theme;
   CustomTheme customTheme = AppTheme.customTheme;
 
@@ -187,6 +185,7 @@ class ManagerProductPage extends GetView<ManagerProductController> {
                         child: GestureDetector(
                           child: TextFormField(
                             controller: controller.searchTextControl,
+                            onChanged: _onSearchChanged,
                             style: FxTextStyle.bodyLarge(
                                 letterSpacing: 0.1,
                                 color: theme.colorScheme.onBackground),
@@ -221,21 +220,6 @@ class ManagerProductPage extends GetView<ManagerProductController> {
                                   borderSide: BorderSide.none),
                               filled: true,
                               fillColor: customTheme.card,
-                              suffixIcon: IconButton(
-                                  icon: const Icon(Icons.image_outlined),
-                                  onPressed: () async{
-                                    ImagePicker picker = ImagePicker();
-
-                                    XFile? image =
-                                    await picker.pickImage(source: ImageSource.gallery);
-
-                                    if (image != null) {
-                                      File file = File(image.path);
-                                      await controller.searchByImage(file);
-                                    }
-                                  },
-                                  iconSize: 22,
-                                  color: theme.primaryColor),
                               isDense: true,
                               contentPadding: const EdgeInsets.all(10),
                             ),
@@ -325,5 +309,13 @@ class ManagerProductPage extends GetView<ManagerProductController> {
         ],
       ),
     );
+  }
+
+  _onSearchChanged(String searchText) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      controller.searchTextControl.text = searchText;
+      controller.searchProduct(searchText);
+    });
   }
 }

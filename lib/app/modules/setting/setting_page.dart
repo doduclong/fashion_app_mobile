@@ -99,6 +99,7 @@ class SettingPage extends GetView<SettingController> {
                     ],
                   ),
                   onPressed: () {
+                    Get.offAllNamed(AppRoutes.signIn);
                   },
                 ),
               ),

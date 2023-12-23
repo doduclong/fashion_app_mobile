@@ -15,6 +15,7 @@ class LoginController extends GetxController{
   final storedGender = "".obs;
   final storedRole = "".obs;
   final storedBirthday = "".obs;
+  final isLoading = false.obs;
 
 
   late TextEditingController emailTE, passwordTE;
@@ -47,6 +48,7 @@ class LoginController extends GetxController{
   }
 
   Future<String> login() async {
+    isLoading.value = true;
     emailCounter = 0;
     passwordCounter = 0;
     if (formKey.currentState!.validate()) {
@@ -57,6 +59,7 @@ class LoginController extends GetxController{
     if(result == ServerResponse.success){
         await getUserInfo();
     }
+    isLoading.value = false;
     return result;
   }
 

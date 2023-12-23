@@ -80,33 +80,33 @@ class ProductPage extends GetView<ProductController>{
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Container(
-                          height: 150,
-                          width: 150,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: controller.selectedProduct.value.galleries!.length,
-                            itemBuilder: (_, int index) {
-                              return ClipRRect(
-                                borderRadius: BorderRadius.all(Radius.circular(8)),
-                                child:
-                                Image.memory(
-                                  const Base64Decoder().convert(controller.selectedProduct.value.galleries![index].image!),
-                                  height: 150,
-                                  fit: BoxFit.cover,),
-                              );
-                            },
-                          ),
-                        ),
-                        // ClipRRect(
-                        //   borderRadius: BorderRadius.all(Radius.circular(8)),
-                        //   child:
-                        //   Image.memory(
-                        //     const Base64Decoder().convert(controller.selectedProduct.value.galleries![0].image!),
-                        //     height: 150,
-                        //     fit: BoxFit.cover,),
+                        // Container(
+                        //   height: 150,
+                        //   width: 150,
+                        //   child: ListView.builder(
+                        //     scrollDirection: Axis.horizontal,
+                        //     shrinkWrap: true,
+                        //     itemCount: controller.selectedProduct.value.galleries!.length,
+                        //     itemBuilder: (_, int index) {
+                        //       return ClipRRect(
+                        //         borderRadius: BorderRadius.all(Radius.circular(8)),
+                        //         child:
+                        //         Image.memory(
+                        //           const Base64Decoder().convert(controller.selectedProduct.value.galleries![index].image!),
+                        //           height: 150,
+                        //           fit: BoxFit.cover,),
+                        //       );
+                        //     },
+                        //   ),
                         // ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          child:
+                          Image.memory(
+                            const Base64Decoder().convert(controller.selectedProduct.value.galleries![0].image!),
+                            height: 150,
+                            fit: BoxFit.cover,),
+                        ),
                         FxSpacing.height(20),
                         FxText.bodyLarge(controller.selectedProduct.value.name ?? "", color: theme.colorScheme.onBackground,),
                         FxSpacing.height(8),
