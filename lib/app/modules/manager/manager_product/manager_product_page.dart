@@ -43,6 +43,18 @@ class ManagerProductPage extends GetView<ManagerProductController> {
                   color: theme.primaryColor,
                 )),
 
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Get.toNamed(AppRoutes.addProduct);
+
+                  },
+                  icon: Icon(
+                    Icons.add,
+                    color: theme.primaryColor,
+                  )),
+            ],
+
             // actions: [
             //   IconButton(
             //       onPressed: () {

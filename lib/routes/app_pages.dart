@@ -11,6 +11,8 @@ import 'package:fashion_app/app/modules/manager/manager_category/manager_categor
 import 'package:fashion_app/app/modules/manager/manager_order/manager_order_binding.dart';
 import 'package:fashion_app/app/modules/manager/manager_order/manager_order_page.dart';
 import 'package:fashion_app/app/modules/manager/manager_page.dart';
+import 'package:fashion_app/app/modules/manager/manager_product/add_product/add_product_binding.dart';
+import 'package:fashion_app/app/modules/manager/manager_product/add_product/add_product_page.dart';
 import 'package:fashion_app/app/modules/manager/manager_product/manager_product_binding.dart';
 import 'package:fashion_app/app/modules/manager/manager_product/manager_product_page.dart';
 import 'package:fashion_app/app/modules/manager/manager_user/manager_user_binding.dart';
@@ -137,6 +139,13 @@ class AppPages {
         name: AppRoutes.profile,
         page: () => ProfilePage(),
         binding: ProfileBinding(),
+        transitionDuration: const Duration(milliseconds: duration),
+        transition: Transition.leftToRight),
+
+    GetPage(
+        name: AppRoutes.addProduct,
+        page: () => AddProductPage(),
+        binding: AddProductBinding(),
         transitionDuration: const Duration(milliseconds: duration),
         transition: Transition.leftToRight),
   ];

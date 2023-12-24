@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:fashion_app/app/data/constant/environment.dart';
 import 'package:fashion_app/app/models/product/product.dart';
+import 'package:fashion_app/app/models/product/size_product.dart';
 import 'package:fashion_app/app/models/response/response_object.dart';
 import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/modules/login/login_controller.dart';
 import 'package:fashion_app/core/values/app_value.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:dio/dio.dart' as dio2;
 
 abstract class ProductClient {
   List<String> ids = [];
@@ -34,6 +38,8 @@ abstract class ProductClient {
   Future searchProductByKeywords(List<String> keywords);
 
   Future getProductById(int id);
+
+  Future createProduct(File file, String name, String price, String describe, int categoryId,String classification, List<SizeProduct> sizes);
 }
 
 class ProductApi extends ProductClient{
@@ -165,6 +171,45 @@ class ProductApi extends ProductClient{
     } on Exception {
       debugPrint("get products: Error found!");
       return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future createProduct(File file, String name, String price, String describe, int categoryId, String classification, List<SizeProduct> sizes) async{
+    String fileName = file.path.split('/').last;
+    dio2.FormData formData = dio2.FormData.fromMap({
+      "file":
+      await dio2.MultipartFile.fromFile(file.path, filename:fileName),
+      "name": name,
+      "describe": describe,
+      "price": price,
+      "categoryId": categoryId,
+      "classification": classification,
+      "size": sizes
+    });
+
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.post(
+          '$productEndpoint/create',
+          options: Options(headers: headers),
+          data: formData,
+        );
+        if (response.statusCode == 200) {
+          return ServerResponse.success;
+        } else {
+          debugPrint("Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("Error found!");
+      return ServerResponse.otherError;
     }
   }
 

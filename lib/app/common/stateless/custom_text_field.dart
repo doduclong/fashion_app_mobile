@@ -15,7 +15,8 @@ class CustomTextField extends StatelessWidget {
         this.minLines,
         this.maxLines,
         this.inputFormatters,
-        this.obscureText})
+        this.obscureText,
+        this.tap,})
       : super(key: key);
 
   final String? labelText;
@@ -30,10 +31,12 @@ class CustomTextField extends StatelessWidget {
   final int? maxLines;
   final List<TextInputFormatter>? inputFormatters;
   final bool? obscureText;
+  final Function()? tap;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onTap: tap,
       controller: controller,
       initialValue: initialValue,
       obscureText: obscureText ?? false,
