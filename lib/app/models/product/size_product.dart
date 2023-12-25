@@ -11,4 +11,9 @@ class SizeProduct{
     size: json["size"],
     quantity: json["quantity"]
   );
+
+  Map toJson() => {
+    'size': size,
+    'quantity': quantity,
+  };
 }

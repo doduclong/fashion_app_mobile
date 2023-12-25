@@ -39,7 +39,7 @@ abstract class ProductClient {
 
   Future getProductById(int id);
 
-  Future createProduct(File file, String name, String price, String describe, int categoryId,String classification, List<SizeProduct> sizes);
+  Future createProduct(File file, String name, String price, String describe, int categoryId,String classification, String sizes);
 }
 
 class ProductApi extends ProductClient{
@@ -175,7 +175,7 @@ class ProductApi extends ProductClient{
   }
 
   @override
-  Future createProduct(File file, String name, String price, String describe, int categoryId, String classification, List<SizeProduct> sizes) async{
+  Future createProduct(File file, String name, String price, String describe, int categoryId, String classification, String sizes) async{
     String fileName = file.path.split('/').last;
     dio2.FormData formData = dio2.FormData.fromMap({
       "file":
@@ -185,7 +185,7 @@ class ProductApi extends ProductClient{
       "price": price,
       "categoryId": categoryId,
       "classification": classification,
-      "size": sizes
+      "sizes": sizes
     });
 
     try {
@@ -207,9 +207,8 @@ class ProductApi extends ProductClient{
         debugPrint("No connectivity!");
         return ServerResponse.noConnectivity;
       }
-    } on Exception {
-      debugPrint("Error found!");
-      return ServerResponse.otherError;
+    } catch(e){
+      print(e);
     }
   }
 

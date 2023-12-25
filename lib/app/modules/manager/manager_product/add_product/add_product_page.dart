@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:fashion_app/app/common/stateless/custom_dialog/error_dialog.dart';
 import 'package:fashion_app/app/common/stateless/custom_text_field.dart';
@@ -79,8 +80,8 @@ class AddProductPage extends GetView<AddProductController> {
             String describe = controller.describeTE.text;
             String price = controller.priceTE.text;
 
-            String result = await controller.add(file, name, describe, price,1, file.path.split('/').last.split('.')[0].toString(), controller.sizes);
-
+            //String result = await controller.add(file, name,  price, describe, controller.selectedCategory.value.id! , file.path.split('/').last.split('.')[0].toString(), jsonEncode(controller.sizes));
+            String result = await controller.add(file, name,  price, describe, controller.selectedCategory.value.id! , file.path.split('/').last.split('.')[0].toString(), json.encode(controller.sizes));
             if(result == ServerResponse.success){
               Get.offAndToNamed(AppRoutes.home);
             }else{
@@ -447,13 +448,16 @@ class AddProductPage extends GetView<AddProductController> {
             itemCount: controller.sizes.length,
             itemBuilder: (_, int index) {
               SizeProduct size = controller.sizes[index];
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  FxText.bodyMedium("Kích cỡ: " + size.size!, color: theme.colorScheme.onBackground,),
+              return Padding(
+                padding: const EdgeInsets.only(top: 5.0, bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    FxText.bodyMedium("Kích cỡ: " + size.size!, color: theme.colorScheme.onBackground,),
 
-                  FxText.bodyMedium("Số lượng: " + size.quantity!.toString(), color: theme.colorScheme.onBackground,),
-                ],
+                    FxText.bodyMedium("Số lượng: " + size.quantity!.toString(), color: theme.colorScheme.onBackground,),
+                  ],
+                ),
               );
             },
             separatorBuilder: (context, index) {

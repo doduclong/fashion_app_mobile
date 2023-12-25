@@ -20,8 +20,10 @@ class AddProductController extends GetxController{
   Rx<Category> selectedCategory = Rx<Category>(Category());
   final fileUrl = "".obs;
 
-  Future<String> add(File file, String name, String price, String describe, int categoryId, String classification, List<SizeProduct> sizes) async {
-    String result = await ProductApi().createProduct(file, name, price, describe, categoryId,classification, sizes);
+  Future<String> add(File file, String name, String price, String describe, int categoryId, String classification, String sizes) async {
+    print(sizes.replaceAll('\'', ""));
+    String sizeReplace = sizes.replaceAll('\'', "");
+    String result = await ProductApi().createProduct(file, name, price, describe, categoryId,classification, sizeReplace);
 
     if(result == ServerResponse.success){
       //await getUserInfo();
