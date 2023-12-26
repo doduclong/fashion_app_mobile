@@ -23,6 +23,9 @@ class AddProductController extends GetxController{
   Future<String> add(File file, String name, String price, String describe, int categoryId, String classification, String sizes) async {
     print(sizes.replaceAll('\'', ""));
     String sizeReplace = sizes.replaceAll('\'', "");
+    String sizeReplace2 = sizes.replaceAll('\\', "");
+    print(sizeReplace2);
+    print(sizeReplace2);
     String result = await ProductApi().createProduct(file, name, price, describe, categoryId,classification, sizeReplace);
 
     if(result == ServerResponse.success){

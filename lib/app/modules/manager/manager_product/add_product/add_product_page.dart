@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:fashion_app/app/common/stateless/custom_dialog/error_dialog.dart';
+import 'package:fashion_app/app/common/stateless/custom_dialog/success_dialog.dart';
 import 'package:fashion_app/app/common/stateless/custom_text_field.dart';
 import 'package:fashion_app/app/models/category.dart';
 import 'package:fashion_app/app/models/product/size_product.dart';
@@ -83,14 +84,24 @@ class AddProductPage extends GetView<AddProductController> {
             //String result = await controller.add(file, name,  price, describe, controller.selectedCategory.value.id! , file.path.split('/').last.split('.')[0].toString(), jsonEncode(controller.sizes));
             String result = await controller.add(file, name,  price, describe, controller.selectedCategory.value.id! , file.path.split('/').last.split('.')[0].toString(), json.encode(controller.sizes));
             if(result == ServerResponse.success){
-              Get.offAndToNamed(AppRoutes.home);
+              //Get.offAndToNamed(AppRoutes.home);
+              if(context.mounted){
+                await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const SuccessDialog(
+                          icon: Icons.add,
+                          message: "Thêm sản phẩm thành công!");
+                    });
+                Get.back();
+              }
             }else{
               if(context.mounted){
                 showDialog(
                     context: context,
                     builder: (context) {
                       return const ErrorDialog(
-                          icon: Icons.login,
+                          icon: Icons.error,
                           message: "Thêm sản phẩm không thành công!");
                     });
               }
