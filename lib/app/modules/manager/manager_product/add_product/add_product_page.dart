@@ -8,7 +8,6 @@ import 'package:fashion_app/app/models/product/size_product.dart';
 import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/modules/manager/manager_product/add_product/add_product_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
-import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:file_picker/file_picker.dart';
