@@ -7,6 +7,7 @@ import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 class RegisterPage extends GetView<RegisterController> {
@@ -24,7 +25,26 @@ class RegisterPage extends GetView<RegisterController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Obx(()=>controller.isLoading.value
+        ? Container(
+      color: Colors.white,
+      width: double.maxFinite,
+      height: MediaQuery.of(context).size.height / 2,
+      child: Center(
+        child: SpinKitThreeInOut(
+          size: 50.0,
+          itemBuilder: (_, int index) {
+            return DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                color:
+                index.isEven ? Colors.white : theme.primaryColor,
+              ),
+            );
+          },
+        ),
+      ),
+    ) : Scaffold(
       body: ListView(
         padding:
             FxSpacing.fromLTRB(20, FxSpacing.safeAreaTop(context) + 10, 20, 20),
@@ -47,7 +67,7 @@ class RegisterPage extends GetView<RegisterController> {
                       isDense: true,
                       fillColor: theme.cardTheme.color,
                       prefixIcon: Icon(
-                        FeatherIcons.mail,
+                        FeatherIcons.edit,
                         color: theme.colorScheme.onBackground,
                       ),
                       hintText: "Họ và tên",
@@ -58,8 +78,8 @@ class RegisterPage extends GetView<RegisterController> {
                       hintStyle: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
                       isCollapsed: true),
                   maxLines: 1,
-                  controller: controller.usernameTE,
-                  validator: controller.validateEmail,
+                  controller: controller.fullNameTE,
+                  validator: controller.validateText,
                   cursorColor: theme.colorScheme.onBackground,
                 ),
                 FxSpacing.height(20),
@@ -71,7 +91,7 @@ class RegisterPage extends GetView<RegisterController> {
                       isDense: true,
                       fillColor: theme.cardTheme.color,
                       prefixIcon: Icon(
-                        FeatherIcons.mail,
+                        FeatherIcons.phone,
                         color: theme.colorScheme.onBackground,
                       ),
                       hintText: "Số điện thoại",
@@ -79,11 +99,13 @@ class RegisterPage extends GetView<RegisterController> {
                       focusedBorder: outlineInputBorder,
                       border: outlineInputBorder,
                       contentPadding: FxSpacing.all(16),
+
                       hintStyle: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
                       isCollapsed: true),
                   maxLines: 1,
-                  controller: controller.usernameTE,
-                  validator: controller.validateEmail,
+                  keyboardType: TextInputType.number,
+                  controller: controller.phoneNumberTE,
+                  validator: controller.validateText,
                   cursorColor: theme.colorScheme.onBackground,
                 ),
                 FxSpacing.height(20),
@@ -106,7 +128,7 @@ class RegisterPage extends GetView<RegisterController> {
                       hintStyle: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
                       isCollapsed: true),
                   maxLines: 1,
-                  controller: controller.usernameTE,
+                  controller: controller.emailTE,
                   validator: controller.validateEmail,
                   cursorColor: theme.colorScheme.onBackground,
                 ),
@@ -119,7 +141,7 @@ class RegisterPage extends GetView<RegisterController> {
                       isDense: true,
                       fillColor: theme.cardTheme.color,
                       prefixIcon: Icon(
-                        FeatherIcons.mail,
+                        Icons.perm_identity,
                         color: theme.colorScheme.onBackground,
                       ),
                       hintText: "Tài khoản",
@@ -131,7 +153,7 @@ class RegisterPage extends GetView<RegisterController> {
                       isCollapsed: true),
                   maxLines: 1,
                   controller: controller.usernameTE,
-                  validator: controller.validateEmail,
+                  validator: controller.validateText,
                   cursorColor: theme.colorScheme.onBackground,
                 ),
                 FxSpacing.height(20),
@@ -179,8 +201,8 @@ class RegisterPage extends GetView<RegisterController> {
                       hintStyle: FxTextStyle.bodyMedium(color: theme.colorScheme.onBackground),
                       isCollapsed: true),
                   maxLines: 1,
-                  controller: controller.passwordTE,
-                  validator: controller.validatePassword,
+                  controller: controller.rePasswordTE,
+                  validator: controller.validateRePassword,
                   cursorColor: theme.colorScheme.onBackground,
                   obscureText: true,
                 ),
@@ -197,7 +219,7 @@ class RegisterPage extends GetView<RegisterController> {
               String result = await controller.register();
 
               if(result == ServerResponse.success){
-                Get.offAndToNamed(AppRoutes.home);
+                Get.offAndToNamed(AppRoutes.signIn);
               }else{
                 if(context.mounted){
                   showDialog(
@@ -237,6 +259,6 @@ class RegisterPage extends GetView<RegisterController> {
           FxSpacing.height(20),
         ],
       ),
-    );
+    ));
   }
 }
