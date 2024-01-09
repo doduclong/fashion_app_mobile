@@ -191,7 +191,7 @@ class ManagerCategoryPage extends GetView<ManagerCategoryController> {
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           itemCount: controller.listCategory.length,
-                          itemBuilder: (BuildContext context, int index) {
+                          itemBuilder: (_, int index) {
                             Category category = controller.listCategory[index];
                             return categoryWidget(
                                 category,
@@ -349,14 +349,13 @@ class ManagerCategoryPage extends GetView<ManagerCategoryController> {
       },
       child: FxContainer.bordered(
         color: Colors.transparent,
-        paddingAll: 4,
+        paddingAll: 10,
         borderRadiusAll: 4,
         margin: FxSpacing.bottom(8),
         child: Row(
           children: <Widget>[
             Expanded(
               child: FxContainer.none(
-                height: 110,
                 color: Colors.transparent,
                 margin: FxSpacing.left(8),
                 child: Column(
@@ -368,8 +367,6 @@ class ManagerCategoryPage extends GetView<ManagerCategoryController> {
                         fontWeight: 600,
                         color: theme.colorScheme.onBackground
                     ),
-
-
 
                   ],
                 ),
