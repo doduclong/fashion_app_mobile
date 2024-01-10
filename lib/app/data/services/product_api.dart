@@ -33,6 +33,12 @@ abstract class ProductClient {
 
   Future getProducts();
 
+  Future getProductNew();
+
+  Future getProductsExpensive();
+
+  Future getProductsCheap();
+
   Future searchProduct(String searchText);
 
   Future searchProductByKeywords(List<String> keywords);
@@ -60,6 +66,98 @@ class ProductApi extends ProductClient{
         final response = await dio.get(
           '$productEndpoint/getAll',
           options: Options(headers: headers),
+        );
+        ResponseObject responseObject = ResponseObject.fromJson(response.data);
+        if (response.statusCode == 200) {
+          List<Product> datas = List<Product>.from(responseObject.data.map((jsonData) => Product.fromJson(jsonData)));
+          return datas;
+        } else {
+          debugPrint("get products: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("get products: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("get products: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future getProductNew() async{
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.get(
+          '$productEndpoint/newest',
+          options: Options(headers: headers),
+        );
+        ResponseObject responseObject = ResponseObject.fromJson(response.data);
+        if (response.statusCode == 200) {
+          Product data = Product.fromJson(responseObject.data);
+          return data;
+        } else {
+          debugPrint("get products: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("get products: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("get products: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future getProductsExpensive() async{
+    final requestParam = {
+      "price": "2000000",
+    };
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.get(
+          '$productEndpoint/search/over-price',
+          options: Options(headers: headers),
+          queryParameters: requestParam
+        );
+        ResponseObject responseObject = ResponseObject.fromJson(response.data);
+        if (response.statusCode == 200) {
+          List<Product> datas = List<Product>.from(responseObject.data.map((jsonData) => Product.fromJson(jsonData)));
+          return datas;
+        } else {
+          debugPrint("get products: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("get products: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("get products: Error found!");
+      return ServerResponse.connectionFailed;
+    }
+  }
+
+  @override
+  Future getProductsCheap() async{
+    final requestParam = {
+      "price": "500000",
+    };
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.get(
+          '$productEndpoint/search/under-price',
+          options: Options(headers: headers),
+          queryParameters: requestParam
         );
         ResponseObject responseObject = ResponseObject.fromJson(response.data);
         if (response.statusCode == 200) {

@@ -159,8 +159,6 @@ class UserInfoApi extends UserInfoClient{
           data: requestBody,
         );
         if (response.statusCode == 200) {
-          Get.find<LoginController>().storedToken.value = response.data["token"];
-          debugPrint("Login: Success!");
           return  ServerResponse.success;
         } else {
           debugPrint("Login: Server not response!");

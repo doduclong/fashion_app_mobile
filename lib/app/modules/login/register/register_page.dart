@@ -1,4 +1,5 @@
 import 'package:fashion_app/app/common/stateless/custom_dialog/error_dialog.dart';
+import 'package:fashion_app/app/common/stateless/custom_dialog/success_dialog.dart';
 import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/modules/login/register/register_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
@@ -56,7 +57,7 @@ class RegisterPage extends GetView<RegisterController> {
           ),
           FxSpacing.height(50),
           Form(
-            key: controller.formKey,
+            key: controller.registerKey,
             child: Column(
               children: [
                 TextFormField(
@@ -219,7 +220,16 @@ class RegisterPage extends GetView<RegisterController> {
               String result = await controller.register();
 
               if(result == ServerResponse.success){
-                Get.offAndToNamed(AppRoutes.signIn);
+                if(context.mounted){
+                   await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const SuccessDialog(
+                            icon: Icons.login,
+                            message: "Đăng ký tài khoản thành công!");
+                      });
+                }
+                Get.toNamed(AppRoutes.signIn);
               }else{
                 if(context.mounted){
                   showDialog(

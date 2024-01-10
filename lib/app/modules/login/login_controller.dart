@@ -19,7 +19,7 @@ class LoginController extends GetxController{
 
 
   late TextEditingController emailTE, passwordTE;
-  GlobalKey<FormState> formKey = GlobalKey();
+  GlobalKey<FormState> loginKey = GlobalKey<FormState>(debugLabel: '_loginKey');
   int emailCounter = 0;
   int passwordCounter = 0;
   final storedToken = "".obs;
@@ -51,7 +51,7 @@ class LoginController extends GetxController{
     isLoading.value = true;
     emailCounter = 0;
     passwordCounter = 0;
-    if (formKey.currentState!.validate()) {
+    if (loginKey.currentState!.validate()) {
       await Future.delayed(const Duration(milliseconds: 1000));
     }
     String result = await LoginApi().authenticate(emailTE.text, passwordTE.text);

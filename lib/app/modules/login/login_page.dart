@@ -58,7 +58,7 @@ class LoginPage extends GetView<LoginController> {
           ),
           FxSpacing.height(50),
           Form(
-            key: controller.formKey,
+            key: controller.loginKey,
             child: Column(
               children: [
                 TextFormField(

@@ -71,7 +71,9 @@ class HomePage extends GetView<HomeController> {
                     ],
                   ),
                 ),
-                FxContainer.bordered(
+                Obx(()=>controller.isLoading.value
+                    ? CustomCircularIndicator()
+                    : FxContainer.bordered(
                   paddingAll: 16,
                   borderRadiusAll: 4,
                   margin: FxSpacing.nBottom(24),
@@ -88,47 +90,61 @@ class HomePage extends GetView<HomeController> {
                                 padding: FxSpacing.xy(12, 8),
                                 color: theme.colorScheme.primary.withAlpha(28),
                                 borderRadiusAll: 4,
-                                child: FxText.bodySmall("Xu hướng",
+                                child: FxText.bodySmall("Mới về hàng",
                                     color: theme.colorScheme.primary,
                                     letterSpacing: 0.3,
                                     fontWeight: 600),
                               ),
-                              FxText.labelMedium("Colorful Sandal",
+                              FxText.labelMedium(controller.productNew.value.name ?? "",
                                   fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground),
-                              FxText.bodySmall("700,000",
-                                  fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground)
+
+                              FxText.bodyMedium(NumberFormat.decimalPattern().format(controller.productNew.value.price), fontWeight: 700, color: theme.colorScheme.onBackground)
+                              // FxText.bodySmall(controller.productNew.value.price.toString(),
+                              //     fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground)
                             ],
                           ),
                         ),
                       ),
-                      const FxContainer(
+                      FxContainer(
                         paddingAll: 0,
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         borderRadiusAll: 4,
-                        child: Image(
-                          image: AssetImage(
-                              './assets/images/apps/shopping/product/product-8.jpg'),
-                          width: 125,
-                          height: 125,
+                        child:
+                        ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(4)),
+                          child:
+                          Image.memory(const Base64Decoder().convert(controller.productNew.value.galleries![0].image!), height: 125, width: 125, fit: BoxFit.fill,),
+                          // Image.asset(
+                          //   image,
+                          //   height: 120,
+                          //   fit: BoxFit.fill,
+                          // ),
                         ),
+
+                        // Image(
+                        //   image: AssetImage(
+                        //       './assets/images/apps/shopping/product/product-8.jpg'),
+                        //   width: 125,
+                        //   height: 125,
+                        // ),
                       )
                     ],
                   ),
-                ),
+                )),
                 Container(
                   margin: FxSpacing.nBottom(24),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      FxText.bodyLarge("Bán chạy",
+                      FxText.bodyLarge("Giá tốt",
                           fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground),
-                      InkWell(
-                        onTap: (){
-                          Get.toNamed(AppRoutes.allProduct);
-                        },
-                        child: FxText.bodySmall("Xem tất cả",
-                            color: theme.colorScheme.primary, letterSpacing: 0, ),
-                      )
+                      // InkWell(
+                      //   onTap: (){
+                      //     Get.toNamed(AppRoutes.allProduct);
+                      //   },
+                      //   child: FxText.bodySmall("Xem tất cả",
+                      //       color: theme.colorScheme.primary, letterSpacing: 0, ),
+                      // )
                     ],
                   ),
                 ),
@@ -139,9 +155,9 @@ class HomePage extends GetView<HomeController> {
                   height: 170,
                   child:Obx(()=> ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: controller.listProduct.length,
+                    itemCount: controller.listProductCheap.length,
                     itemBuilder: (_, int index) {
-                      Product product = controller.listProduct[index];
+                      Product product = controller.listProductCheap[index];
                       return Padding(
                         padding: const EdgeInsets.only(left: 24.0),
                         child: singleItemWidget(
@@ -157,25 +173,27 @@ class HomePage extends GetView<HomeController> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      FxText.bodyLarge("Dành cho bạn", fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground),
-                      FxText.bodySmall(
-                        "Xem tất cả",
-                        letterSpacing: 0,
-                        color: theme.colorScheme.primary,
-                      ),
+                      FxText.bodyLarge("Cao cấp", fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground),
+                      // FxText.bodySmall(
+                      //   "Xem tất cả",
+                      //   letterSpacing: 0,
+                      //   color: theme.colorScheme.primary,
+                      // ),
                     ],
                   ),
                 ),
-                Container(
+          Obx(()=>controller.isLoading.value
+              ? CustomCircularIndicator()
+              : Container(
                   margin: FxSpacing.nBottom(24),
                   child:
                   Obx(()=>ListView.separated(
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    itemCount: controller.listProduct.length,
+                    itemCount: controller.listProductExpensive.length,
                     itemBuilder: (BuildContext context, int index) {
-                      Product product = controller.listProduct[index];
+                      Product product = controller.listProductExpensive[index];
                       return singleForYouWidget(
                           product: product,
                           context: context
@@ -185,7 +203,7 @@ class HomePage extends GetView<HomeController> {
                       return const Divider(height: 0);
                     },
                   ))
-                ),
+                )),
               ],
             ),
           )),
@@ -260,7 +278,7 @@ class HomePage extends GetView<HomeController> {
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(4)),
             child:
-            Image.memory(const Base64Decoder().convert(product.galleries![0].image!), height: 90, fit: BoxFit.fill,),
+            Image.memory(const Base64Decoder().convert(product.galleries![0].image!), height: 90, width: 80, fit: BoxFit.fill,),
             // Image.asset(
             //   image,
             //   height: 90,

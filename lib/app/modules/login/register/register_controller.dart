@@ -8,7 +8,7 @@ class RegisterController extends GetxController{
   final isLoading = false.obs;
 
   late TextEditingController usernameTE, passwordTE, rePasswordTE, fullNameTE, emailTE, phoneNumberTE;
-  GlobalKey<FormState> formKey = GlobalKey();
+  GlobalKey<FormState> registerKey = GlobalKey<FormState>(debugLabel: '_registerKey');
   int emailCounter = 0;
   int passwordCounter = 0;
   final storedToken = "".obs;
@@ -54,7 +54,7 @@ class RegisterController extends GetxController{
     isLoading.value = true;
     emailCounter = 0;
     passwordCounter = 0;
-    if (formKey.currentState!.validate()) {
+    if (registerKey.currentState!.validate()) {
       await Future.delayed(const Duration(milliseconds: 1000));
     }
     String result = await UserInfoApi().registerAccount(usernameTE.text, passwordTE.text, fullNameTE.text, phoneNumberTE.text, emailTE.text);
