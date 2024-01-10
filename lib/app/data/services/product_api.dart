@@ -4,7 +4,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:fashion_app/app/data/constant/environment.dart';
 import 'package:fashion_app/app/models/product/product.dart';
-import 'package:fashion_app/app/models/product/size_product.dart';
 import 'package:fashion_app/app/models/response/response_object.dart';
 import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/modules/login/login_controller.dart';
@@ -40,6 +39,8 @@ abstract class ProductClient {
   Future getProductsCheap();
 
   Future searchProduct(String searchText);
+
+  Future searchProductByCategory(String categoryId);
 
   Future searchProductByKeywords(List<String> keywords);
 
@@ -307,6 +308,35 @@ class ProductApi extends ProductClient{
       }
     } catch(e){
       print(e);
+    }
+  }
+
+  @override
+  Future searchProductByCategory(String categoryId) async{
+    try {
+      final connectivityResult = await Connectivity().checkConnectivity();
+      //Kiểm tra xem có kết nối mạng hay không
+      if (connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi) {
+        final response = await dio.get(
+            '$productEndpoint/category/$categoryId',
+            options: Options(headers: headers),
+
+        );
+        ResponseObject responseObject = ResponseObject.fromJson(response.data);
+        if (response.statusCode == 200) {
+          List<Product> datas = List<Product>.from(responseObject.data.map((jsonData) => Product.fromJson(jsonData)));
+          return datas;
+        } else {
+          debugPrint("get products: Server not response!");
+          return ServerResponse.noResponse;
+        }
+      } else {
+        debugPrint("get products: No connectivity!");
+        return ServerResponse.noConnectivity;
+      }
+    } on Exception {
+      debugPrint("get products: Error found!");
+      return ServerResponse.connectionFailed;
     }
   }
 

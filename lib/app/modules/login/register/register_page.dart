@@ -3,7 +3,6 @@ import 'package:fashion_app/app/common/stateless/custom_dialog/success_dialog.da
 import 'package:fashion_app/app/models/response/server_response.dart';
 import 'package:fashion_app/app/modules/login/register/register_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
-import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
@@ -229,7 +228,7 @@ class RegisterPage extends GetView<RegisterController> {
                             message: "Đăng ký tài khoản thành công!");
                       });
                 }
-                Get.toNamed(AppRoutes.signIn);
+                Get.back();
               }else{
                 if(context.mounted){
                   showDialog(
