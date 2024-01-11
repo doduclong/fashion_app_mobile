@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:fashion_app/app/common/stateless/custom_dialog/custom_loading.dart';
+import 'package:fashion_app/app/models/category.dart';
 import 'package:fashion_app/app/models/product/product.dart';
 import 'package:fashion_app/app/modules/search/search_controller.dart';
 import 'package:fashion_app/core/utils/flutx/lib/flutx.dart';
@@ -9,6 +10,7 @@ import 'package:fashion_app/routes/app_routes.dart';
 import 'package:fashion_app/theme/app_theme.dart';
 import 'package:fashion_app/theme/custom_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -34,8 +36,51 @@ class SearchPage extends GetView<SearchProductController>{
               "TÌM KIẾM",
               color: theme.primaryColor,
             ),
+            actions: [
+              Builder(
+                builder: (context) => IconButton(
+                    onPressed: () {
+                      Scaffold.of(context).openEndDrawer();
+                    },
+                    icon: Icon(
+                      MdiIcons.tune,
+                      color: theme.primaryColor,
+                    )),
+              ),
+              // IconButton(
+              //   onPressed: (){
+              //
+              //   },
+              //   icon: Icon(
+              //   MdiIcons.tune,
+              //   color: theme.colorScheme.primary,
+              //   size: 22,
+              // ),)
+            ],
           ),
-
+            endDrawer: Drawer(
+              child:Column(
+                children: [
+                  FxSpacing.height(20),
+                  FxText.bodyLarge("DANH MỤC", color: theme.colorScheme.onBackground,),
+                  Obx(()=> Expanded(
+                    child: ListView.separated(
+                      itemCount: controller.listCategory
+                          .length,
+                      itemBuilder: (_, int index) {
+                        return _category(
+                            controller.listCategory[index],
+                            context);
+                      },
+                      separatorBuilder: (context, index) {
+                        return Divider();
+                      },
+                    ),
+                  )
+                  ),
+                ],
+              ),
+            ),
             body:
             Obx(()=>controller.isLoading.value
                 ? CustomCircularIndicator()
@@ -194,6 +239,27 @@ class SearchPage extends GetView<SearchProductController>{
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _category(Category category, BuildContext context) {
+    return ListTile(
+      onTap: () async {
+        await controller.searchProductByCategory(category.id.toString());
+        Get.back();
+      },
+      //leading:Icon(Icons.list),
+      leading: SizedBox(
+        width: 30,
+        child: Icon(
+          FontAwesomeIcons.ticket,
+          color: customTheme.learningCategory5,
+        ),
+      ),
+      title: FxText.bodyMedium(
+        category.name!,
+        color: theme.colorScheme.onBackground,
       ),
     );
   }
