@@ -98,7 +98,7 @@ class HomePage extends GetView<HomeController> {
                               FxText.labelMedium(controller.productNew.value.name ?? "",
                                   fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground),
 
-                              FxText.bodyMedium(NumberFormat.decimalPattern().format(controller.productNew.value.price), fontWeight: 700, color: theme.colorScheme.onBackground)
+                              FxText.bodyMedium(NumberFormat.decimalPattern().format(controller.productNew.value.price ?? 0), fontWeight: 700, color: theme.colorScheme.onBackground)
                               // FxText.bodySmall(controller.productNew.value.price.toString(),
                               //     fontWeight: 600, letterSpacing: 0, color: theme.colorScheme.onBackground)
                             ],

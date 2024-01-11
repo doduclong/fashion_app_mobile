@@ -14,11 +14,16 @@ class ProductController extends GetxController{
   final existQuantity = 0.obs;
 
   void increaseQuantity(){
-    quantity.value ++;
+    if(quantity < existQuantity.value){
+      quantity.value ++;
+    }
+
   }
 
   void decreaseQuantity(){
-    quantity.value --;
+    if(quantity>1){
+      quantity.value --;
+    }
   }
 
   void getProductById(int id) async{
